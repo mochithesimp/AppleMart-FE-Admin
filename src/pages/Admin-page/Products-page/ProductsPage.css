@@ -1,0 +1,39 @@
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    width: 100%;
+    max-width: 80rem;
+    padding: 0 2rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+.Products-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+    overflow-y: auto;
+    width: 100vw;
+
+}
+.Products-content{
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: auto;
+    padding: 1.5rem;
+    flex-grow: 1;
+    margin-top: 60px;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

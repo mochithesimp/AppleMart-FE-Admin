@@ -1,22 +1,31 @@
-// src/App.tsx
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/Home-page/Home";
 import LoginPage from "./pages/Login-page/Login";
-import AdminPage from "./pages/Admin";
+import AdminPage from "./pages/Admin-page/Admin";
+import DashboardPage from "./pages/Admin-page/Overview-page/DashboardPage";
+import ProductsPage from "./pages/Admin-page/Products-page/ProductsPage";
+import UsersPage from "./pages/Admin-page/Users-page/UsersPage";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
   },
   {
-    path: '/login',
+    path: "/login",
     element: <LoginPage />,
   },
   {
-    path: '/Admin',
+    path: "/admin",
     element: <AdminPage />,
+    children: [
+      { path: "", element: <DashboardPage /> },
+      { path: "products", element: <ProductsPage /> }, 
+      { path: "users", element: <UsersPage /> },
+    ],
   },
 ]);
+
 function App() {
   return <RouterProvider router={router} />;
 }

@@ -1,0 +1,22 @@
+.sales-container {
+    background: rgba(31, 41, 55, 0.8);
+    border: 1px solid #4b5563;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .sales-title {
+    color: #e5e7eb;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .chart-wrapper {
+    width: 100%;
+    height: 300px;
+  }
+  

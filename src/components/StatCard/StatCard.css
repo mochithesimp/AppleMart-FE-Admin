@@ -1,0 +1,33 @@
+.stat-card {
+    background-color: rgba(31, 41, 55, 0.5); 
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 0.75rem;
+    border: 1px solid #374151; 
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .stat-content {
+    padding: 1.25rem; 
+  }
+  
+  .stat-label {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem; 
+    font-weight: 500;
+    color: #9ca3af;
+  }
+  
+  .stat-icon {
+    margin-right: 0.5rem;
+  }
+  
+  .stat-value {
+    margin-top: 0.25rem;
+    font-size: 1.875rem;
+    font-weight: 600; 
+    color: #f3f4f6;
+  }
+  

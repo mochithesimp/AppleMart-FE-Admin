@@ -1,0 +1,21 @@
+.sales-overview {
+    background: rgba(31, 41, 55, 0.8);
+    border: 1px solid #4b5563;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .sales-overview__title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #e5e7eb;
+    text-align: center;
+  }
+  
+  .sales-overview__wrapper {
+    height: 320px;
+  }
+  

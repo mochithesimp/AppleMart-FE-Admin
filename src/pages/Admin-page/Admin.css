@@ -1,0 +1,29 @@
+.admin-container {
+    display: flex;
+    height: 100vh;
+    background-color: #111827;
+    color: #f3f4f6;
+    overflow: hidden;
+    width: 100vw;
+    
+  }
+  
+  .admin-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+  }
+  
+  .admin-bg-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, #111827, #1f2937, #111827);
+    opacity: 0.8;
+  }
+  
+  .admin-blur {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(8px);
+  }
+  
