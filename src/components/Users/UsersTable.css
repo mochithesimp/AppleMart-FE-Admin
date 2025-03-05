@@ -1,0 +1,129 @@
+.users-table {
+    background: rgba(31, 41, 55, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #374151;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 40px ;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.table-header h2 {
+    font-size: 1.25rem;
+    color: #f9fafb;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    background: #374151;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px 8px 32px;
+}
+
+.search-box .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    color: #d1d5db;
+}
+
+th {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    border-bottom: 1px solid #4b5563;
+}
+
+tr:nth-child(even) {
+    background: rgba(55, 65, 81, 0.5);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(to right, #8b5cf6, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.role {
+    font-size: 0.875rem;
+    font-weight: 600;
+    /* background: #1e40af; */
+    color: #93c5fd;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.status {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.status.active {
+    /* background: #065f46; */
+    font-weight: bold;
+    color: #065f46;
+}
+
+.status.inactive {
+    /* background: #7f1d1d; */
+    color: #7f1d1d;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    margin-right: 8px;
+}
+
+.actions .edit {
+    color: #60a5fa;
+}
+
+.actions .delete {
+    color: #f87171;
+}
