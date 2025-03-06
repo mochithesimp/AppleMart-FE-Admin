@@ -1,0 +1,23 @@
+.security-actions {
+    margin-top: 16px;
+}
+
+.security-btn {
+    background-color: #4f46e5;
+    color: white;
+    font-weight: bold;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out;
+    width: 100%;
+}
+
+.security-btn:hover {
+    background-color: #4338ca;
+}
+
+@media (min-width: 640px) {
+    .security-btn {
+        width: auto;
+    }
+}
