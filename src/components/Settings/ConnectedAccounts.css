@@ -1,0 +1,70 @@
+.account {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 0;
+}
+
+.account__info {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.account__icon {
+	width: 24px;
+	height: 24px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-right: 8px;
+}
+
+.account__name {
+	color: #d1d5db;
+	font-size: 14px;
+}
+
+.account__button {
+	padding: 6px 12px;
+	border-radius: 6px;
+	transition: background-color 0.2s ease-in-out;
+	border: none;
+	cursor: pointer;
+	color: white;
+}
+
+.account__button--connected {
+	background-color: #16a34a;
+}
+
+.account__button--connected:hover {
+	background-color: #15803d;
+}
+
+.account__button--disconnected {
+	background-color: #4b5563;
+}
+
+.account__button--disconnected:hover {
+	background-color: #374151;
+}
+
+.account__add {
+	display: flex;
+	align-items: center;
+	margin-top: 16px;
+	color: #818cf8;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 14px;
+	transition: color 0.2s ease-in-out;
+}
+
+.account__add:hover {
+	color: #6366f1;
+}
+
+.account__add-icon {
+	margin-right: 6px;
+}

@@ -1,0 +1,47 @@
+.toggle-switch {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 0;
+}
+
+.toggle-label {
+	color: #d1d5db;
+	font-size: 14px;
+}
+
+.toggle-button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	width: 44px;
+	height: 24px;
+	border-radius: 9999px;
+	background-color: #4b5563;
+	transition: background-color 0.3s ease-in-out;
+	outline: none;
+	border: none;
+	cursor: pointer;
+}
+
+.toggle-button.on {
+	background-color: #4f46e5; 
+}
+
+.toggle-indicator {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background-color: white;
+	border-radius: 50%;
+	transition: transform 0.3s ease-in-out;
+	left: 4px;
+}
+
+.toggle-indicator.on {
+	transform: translateX(20px);
+}
+
+.toggle-indicator.off {
+	transform: translateX(0);
+}

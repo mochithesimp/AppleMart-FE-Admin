@@ -1,0 +1,25 @@
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+    overflow-y: auto;
+    width: 100vw;
+    margin-left: 0;
+    background-color: #1a202c;
+}
+
+
+.settings-content {
+    max-width: 100%;
+    margin-left: 160px;
+    margin-right: auto;
+    padding: 1.5rem;
+    flex-grow: 1;
+    margin-top: 60px;
+}
+
+@media (min-width: 1024px) {
+    .settings-page__content {
+        padding: 1.5rem 2rem;
+    }
+}
