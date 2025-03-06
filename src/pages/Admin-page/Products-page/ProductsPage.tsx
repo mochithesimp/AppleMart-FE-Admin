@@ -1,4 +1,3 @@
-import React from 'react'
 import Header from '../../../components/Header/Header'
 import StatCard from '../../../components/StatCard/StatCard'
 import { motion } from "framer-motion";
