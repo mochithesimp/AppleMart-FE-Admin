@@ -96,11 +96,46 @@
   margin-right: 5px;
 }
 
+.add-btn {
+  color: rgb(43, 197, 43);
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
 .exit-btn {
   color: #f87171;
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.create-btn {
+  color: rgb(43, 197, 43);
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: space-between;
+  justify-content: flex-start;
+}
+
+.cancel-btn {
+  color: #f87171;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: space-between;
+  justify-content: flex-start;
 }
 
 select {
@@ -109,4 +144,49 @@ select {
   border: 1px solid #4a4a6a;
   padding: 8px;
   border-radius: 5px;
+}
+
+.add-product-form {
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.image-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.image-upload-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.add-product-form  > input {
+  background: #374151;
+    color: white;
+    border: 1px solid #4a4a6a;
+    padding: 8px;
+    border-radius: 5px;
+}
+.add-product-form  > input::placeholder {
+  color: #d1d5db; 
+}
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

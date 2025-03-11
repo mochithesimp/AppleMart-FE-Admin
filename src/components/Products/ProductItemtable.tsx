@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Edit, Search, Trash2, Save, OctagonX } from "lucide-react";
+import { Edit, Search, Trash2, Save, OctagonX, SquarePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import "./ProductTable.css";
 import { ProductImg, ProductItem } from "../../interfaces";
@@ -12,10 +12,12 @@ import {
 } from "../../apiServices/ProductServices/productItemServices";
 import { getProductImgs } from "../../apiServices/ProductServices/productImgSevices";
 import ImageDropdown from "./ImageDropdown";
+import AddProductForm from "./components/AddProductItemForm";
 
 const ProductItemsTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [productItems, setProductItems] = useState<ProductItem[]>([]);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [editingProductItemId, setEditingProductItemId] = useState<
     number | null
   >(null);
@@ -75,37 +77,34 @@ const ProductItemsTable = () => {
     fetchData();
   }, []);
 
-  // delete productItem
-  const deleteProduct = async (productItemId: number) => {
+  // delete productItem------------------------------------------------------
+  const deleteProductItem = async (productItemId: number) => {
     try {
-      swal({
+      const confirmDelete = await swal({
         title: "Are you sure you want to delete this productItem?",
         text: "This action cannot be undone!",
         icon: "warning",
         buttons: ["Cancel", "Confirm"],
         dangerMode: true,
-      }).then(async (confirmDelete) => {
-        if (confirmDelete) {
-          const response = await deleteProductItems(productItemId);
-
-          if (response) {
-            swal("Success!", "ProductItem was deleted!", "success");
-            setProductItems(
-              productItems.filter(
-                (product) => product.productItemID !== productItemId
-              )
-            );
-          } else {
-            throw new Error("Failed to delete productItem");
-          }
-        }
       });
+
+      if (confirmDelete) {
+        const response = await deleteProductItems(productItemId);
+
+        if (response) {
+          swal("Success!", "ProductItem was deleted!", "success").then(() => {
+            window.location.reload();
+          });
+        } else {
+          throw new Error("Failed to delete productItem");
+        }
+      }
     } catch (error) {
-      console.error("Error deleting notification:", error);
+      console.error("Error deleting product item:", error);
     }
   };
 
-  // handle edit
+  // handle edit --------------------------------------------------
   const handleEditClick = (product: ProductItem) => {
     setEditingProductItemId(product.productItemID);
     setEditedData({
@@ -121,7 +120,7 @@ const ProductItemsTable = () => {
     });
   };
 
-  // handle image
+  // handle image------------------------------------------------------
   const handleImageChange = (file: File, index: number) => {
     if (!file) return;
 
@@ -149,8 +148,25 @@ const ProductItemsTable = () => {
     };
   };
 
-  // handle save
+  // handle save---------------------------------------------------------------
   const handleSave = async (productItemId: number) => {
+    const errors: string[] = [];
+
+    if (!editedData.name) errors.push("Name is required.");
+    if (editedData.name && editedData.name.length > 255)
+      errors.push("Name cannot exceed 255 characters.");
+    if (editedData.description && editedData.description.length > 1000)
+      errors.push("Description cannot exceed 1000 characters.");
+    if (editedData.quantity === undefined || editedData.quantity === null)
+      errors.push("Quantity is required.");
+    if (editedData.price === undefined || editedData.price === null)
+      errors.push("Price is required.");
+
+    if (errors.length > 0) {
+      swal("Validation Error", errors.join("\n"), "error");
+      return;
+    }
+
     try {
       let updatedImages = [...(editedData.updatedProductImgs || [])];
 
@@ -174,11 +190,13 @@ const ProductItemsTable = () => {
         ...editedData,
         updatedProductImgs: updatedImages, // Cập nhật danh sách ảnh mới
       };
-      // console.log("vvvvvvvvvvvvvvvvvvvvvvvvvv", editedData);
+
       const response = await updateProductItem(
         productItemId,
         updatedProductItem
       );
+
+      // cái này cập nhật lại sản phẩm khi edit xong ngay lập tức
       if (response) {
         setProductItems(
           productItems.map((p) =>
@@ -187,14 +205,20 @@ const ProductItemsTable = () => {
               : p
           )
         );
-        setEditingProductItemId(null);
-        swal("Success!", "ProductItem updated!", "success");
+        // setEditingProductItemId(null);
+        swal("Success!", "ProductItem updated!", "success").then(() => {
+          window.location.reload();
+          // setProductItems((prevItems) =>
+          //   prevItems.filter((product) => product.productItemID !== productItemId)
+          // );
+        });
       }
     } catch (error) {
       console.error("Error updating productItem:", error);
     }
   };
 
+  // hander search ------------------------------------------------------------------------------
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -212,17 +236,29 @@ const ProductItemsTable = () => {
       transition={{ delay: 0.2 }}
     >
       <div className="products-header">
-        <h2>Product List</h2>
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Search products..."
-            onChange={handleSearch}
-            value={searchTerm}
-          />
-          <Search className="search-icon" size={18} />
+        <h2>Product Item List</h2>
+
+        <div style={{ display: "flex" }}>
+          <button className="add-btn" onClick={() => setShowAddForm(true)}>
+            <SquarePlus size={40} />
+          </button>
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Search products..."
+              onChange={handleSearch}
+              value={searchTerm}
+            />
+            <Search className="search-icon" size={18} />
+          </div>
         </div>
       </div>
+      {showAddForm && (
+        <AddProductForm
+          onClose={() => setShowAddForm(false)}
+          onSuccess={() => window.location.reload()}
+        />
+      )}
       <div className="table-wrapper">
         <table className="products-table">
           <thead>
@@ -279,7 +315,7 @@ const ProductItemsTable = () => {
                 <td>
                   {editingProductItemId === product.productItemID ? (
                     <input
-                      value={editedData.description || 0}
+                      value={editedData.description || ""}
                       onChange={(e) =>
                         setEditedData({
                           ...editedData,
@@ -309,7 +345,7 @@ const ProductItemsTable = () => {
                 <td>
                   {editingProductItemId === product.productItemID ? (
                     <input
-                      value={editedData.price || ""}
+                      value={editedData.price || 0}
                       onChange={(e) =>
                         setEditedData({
                           ...editedData,
@@ -326,7 +362,7 @@ const ProductItemsTable = () => {
                     <>
                       <button
                         className="save-btn"
-                        onClick={() => handleSave(product.productID)}
+                        onClick={() => handleSave(product.productItemID)}
                       >
                         <Save size={18} />
                       </button>
@@ -345,9 +381,10 @@ const ProductItemsTable = () => {
                       >
                         <Edit size={18} />
                       </button>
+
                       <button
                         className="delete-btn"
-                        onClick={() => deleteProduct(product.productID)}
+                        onClick={() => deleteProductItem(product.productItemID)}
                       >
                         <Trash2 size={18} />
                       </button>
