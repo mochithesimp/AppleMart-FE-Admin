@@ -18,7 +18,7 @@ const ProductsTable = () => {
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
   const [editedData, setEditedData] = useState<Partial<aProduct>>({});
 
-  // Get all product
+  // Get all product-------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
       const result = await getProduct();
@@ -31,7 +31,7 @@ const ProductsTable = () => {
     fetchData();
   }, []);
 
-  // Get Category
+  // Get Category------------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
       const result = await getCategory();
@@ -52,7 +52,7 @@ const ProductsTable = () => {
     return { ...product, categoryName: category ? category.name : "Unknown" };
   });
 
-  // delete product
+  // delete product-----------------------------------------------------------
   const deleteProduct = async (productId: number) => {
     try {
       swal({
@@ -80,7 +80,7 @@ const ProductsTable = () => {
     }
   };
 
-// handle edit
+// handle edit -----------------------------------------------------------------
 const handleEditClick = (product: aProduct) => {
   setEditingProductId(product.productID);
   setEditedData({
@@ -92,7 +92,7 @@ const handleEditClick = (product: aProduct) => {
   });
 };
 
-// handle save
+// handle save----------------------------------------------------------------------
 const handleSave = async (productId: number) => {
   try {
     const response = await updateProduct(productId, editedData);
@@ -108,7 +108,7 @@ const handleSave = async (productId: number) => {
   }
 };
 
-
+// handle search ---------------------------------------------------------------------------
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -248,46 +248,4 @@ const handleSave = async (productId: number) => {
 
 export default ProductsTable;
 
-// return (
-//   <motion.div className='products-container' initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-//     <div className='products-header'>
-//       <h2>Product List</h2>
-//       <div className='search-box'>
-//         <input type='text' placeholder='Search products...' onChange={handleSearch} value={searchTerm} />
-//         <Search className='search-icon' size={18} />
-//       </div>
-//     </div>
-//     <div className='table-wrapper'>
-//       <table className='products-table'>
-//         <thead>
-//           <tr>
-//             <th>Name</th>
-//             <th>Category</th>
-//             <th>Price</th>
-//             <th>Stock</th>
-//             <th>Sales</th>
-//             <th>Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {filteredProducts.map((product) => (
-//             <motion.tr key={product.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-//               <td className='product-name'>
-//                 <img src='https://images.unsplash.com/photo-1627989580309-bfaf3e58af6f?w=500&auto=format&fit=crop&q=60' alt='Product' className='product-image' />
-//                 {product.name}
-//               </td>
-//               <td>{product.category}</td>
-//               <td>${product.price.toFixed(2)}</td>
-//               <td>{product.stock}</td>
-//               <td>{product.sales}</td>
-//               <td>
-//                 <button className='edit-btn'><Edit size={18} /></button>
-//                 <button className='delete-btn'><Trash2 size={18} /></button>
-//               </td>
-//             </motion.tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   </motion.div>
-// );
+

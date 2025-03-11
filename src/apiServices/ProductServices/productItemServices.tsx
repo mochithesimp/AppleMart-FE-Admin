@@ -12,6 +12,17 @@ export const getProductItems = async () => {
   }
 };
 
+export const createProductItem = async (formData: unknown) => {
+  try {
+    const response = await axios.post(`https://localhost:7140/api/ProductItem`,
+      formData
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updateProductItem = async (productId: number, formData: unknown) => {
   try {
     const response = await axios.put(`https://localhost:7140/api/ProductItem/${productId}`,
