@@ -9,7 +9,10 @@ interface StatCardProps {
   color: string;
 }
 
+
 const StatCard: React.FC<StatCardProps> = ({ name, icon: Icon, value, color }) => {
+
+  
   return (
     <motion.div
       className="stat-card"

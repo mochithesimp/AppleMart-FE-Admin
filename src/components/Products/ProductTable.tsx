@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Edit, Search, Trash2, Save } from "lucide-react";
+import { Edit, Search, Trash2, Save, SquarePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import "./ProductTable.css";
 import { aProduct, iCategory } from "../../interfaces";
@@ -10,6 +10,7 @@ import {
 } from "../../apiServices/ProductServices/productServices";
 import { getCategory } from "../../apiServices/CategoryServices/categoryServices";
 import swal from "sweetalert";
+import AddProductForm2 from "./components/AddProductForm";
 
 const ProductsTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -17,6 +18,7 @@ const ProductsTable = () => {
   const [categories, setCategories] = useState<iCategory[]>([]);
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
   const [editedData, setEditedData] = useState<Partial<aProduct>>({});
+  const [showAddForm, setShowAddForm] = useState(false);
 
   // Get all product-------------------------------------------------
   useEffect(() => {
@@ -127,16 +129,27 @@ const handleSave = async (productId: number) => {
     >
       <div className="products-header">
         <h2>Product List</h2>
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Search products..."
-            onChange={handleSearch}
-            value={searchTerm}
-          />
-          <Search className="search-icon" size={18} />
+        <div style={{ display: "flex" }}>
+          <button className="add-btn" onClick={() => setShowAddForm(true)}>
+            <SquarePlus size={40} />
+          </button>
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Search products..."
+              onChange={handleSearch}
+              value={searchTerm}
+            />
+            <Search className="search-icon" size={18} />
+          </div>
         </div>
       </div>
+      {showAddForm && (
+        <AddProductForm2
+          onClose={() => setShowAddForm(false)}
+          onSuccess={() => window.location.reload()}
+        />
+      )}
       <div className="table-wrapper">
         <table className="products-table">
           <thead>
