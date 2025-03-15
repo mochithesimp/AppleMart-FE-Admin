@@ -42,6 +42,16 @@ export interface ProductItem {
   productImgs: ProductImg[];
 }
 
+export interface iUser {
+  id: string;
+  name: string;
+  email: string;
+  phoneNumber: number;
+  address: string;
+  avatar: string;
+}
+
+
 // interface ProductItemResponse {
 //   $id: string;
 //   productItemID: number;

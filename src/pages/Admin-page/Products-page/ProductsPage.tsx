@@ -7,6 +7,7 @@ import ProductsTable from '../../../components/Products/ProductTable';
 import CategoryDistributionChart from '../../../components/Charts/CategoryDistributionChart/CategoryDistributionChart';
 import SalesTrendChart from '../../../components/Products/ProductsChart/SalesTrendChart';
 import ProductItemsTable from '../../../components/Products/ProductItemtable';
+import CategoryTable from '../../../components/Products/CategoryTable';
 
 const ProductsPage = () => {
   return (
@@ -25,6 +26,7 @@ const ProductsPage = () => {
           <StatCard name="Total Revenue" icon={DollarSign} value="12.5%" color="#10B981" />
         </motion.div>
         {/* Table */}
+        <CategoryTable/>
         <ProductsTable />
         <ProductItemsTable />    
         <div className='grid grid-col-1 lg:grid-cols-2 gap-8'>

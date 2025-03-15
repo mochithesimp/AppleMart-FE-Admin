@@ -21,6 +21,16 @@ export const getProduct = async () => {
     console.log(error);
   }
 };
+export const createProduct = async (formData: unknown) => {
+  try {
+    const response = await axios.post(`https://localhost:7140/api/Product`,
+      formData
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const updateProduct = async (productId: number, formData: unknown) => {
   try {
