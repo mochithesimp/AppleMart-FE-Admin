@@ -46,9 +46,10 @@ export interface iUser {
   id: string;
   name: string;
   email: string;
-  phoneNumber: number;
+  phoneNumber: string;
   address: string;
   avatar: string;
+  role: string;
 }
 
 

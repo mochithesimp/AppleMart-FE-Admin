@@ -1,0 +1,10 @@
+import Project from "../assets/auth/Untitled Project.png";
+import mail from "../assets/auth/mail.png";
+import coin from "../assets/auth/coin.png";
+import stars from "../assets/auth/stars.png";
+import mess from "../assets/auth/mess.png";
+import setting from "../assets/auth/setting.png";
+import store from "../assets/auth/store.png";
+import safari from "../assets/auth/safari.png";
+import call from "../assets/auth/call.png";
+export { Project, mail, coin, stars, mess, setting, store, safari, call };

@@ -56,6 +56,21 @@
     width: 100%;
 }
 
+.profile-logout-btn {
+    background-color: #e963b3 ;
+    color: white;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out;
+    width: 100%;
+    margin-left: 20px ;
+}
+
+.profile-logout-btn:hover {
+    background-color:  #e546a5;
+}
+
 .profile-edit-btn:hover {
     background-color: #4338ca;
 }
