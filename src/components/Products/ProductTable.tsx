@@ -179,12 +179,7 @@ const handleSave = async (productId: number) => {
                       }
                     />
                   ) : (
-                    <>
-                      <img
-                        src="https://images.unsplash.com/photo-1627989580309-bfaf3e58af6f?w=500&auto=format&fit=crop&q=60"
-                        alt="Product"
-                        className="product-image"
-                      />
+                    <>                    
                       {product.name}
                     </>
                   )}

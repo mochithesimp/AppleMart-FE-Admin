@@ -1,6 +1,5 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./pages/Home-page/Home";
-import LoginPage from "./pages/Login-page/Login";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import LoginPage from "./pages/Authentication-page/UserAuth";
 import AdminPage from "./pages/Admin-page/Admin";
 import DashboardPage from "./pages/Admin-page/Overview-page/DashboardPage";
 import ProductsPage from "./pages/Admin-page/Products-page/ProductsPage";
@@ -12,14 +11,14 @@ import SettingsPage from "./pages/Admin-page/Settings-page/SettingsPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <Navigate to="/login" />, // Chuyển hướng về trang login
   },
   {
     path: "/login",
     element: <LoginPage />,
   },
   {
-    path: "/admin",
+    path: "/Admin",
     element: <AdminPage />,
     children: [
       { path: "", element: <DashboardPage /> },
