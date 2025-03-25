@@ -52,6 +52,28 @@ export interface iUser {
   role: string;
 }
 
+export interface aOrder {
+  orderID: number;
+  userID: string;
+  shipperID: number;
+  orderDate: string;
+  address: string;
+  paymentMethod: string;
+  shippingMethodId: number;
+  total: number;
+  orderStatus: string;
+  voucherID: number;
+  orderDetails: OrderDetail[];
+}
+
+export interface OrderDetail {
+  orderDetailID: number;
+  orderID: number;
+  productItemID: number;
+  quantity: number;
+  price: number;
+}
+
 
 // interface ProductItemResponse {
 //   $id: string;

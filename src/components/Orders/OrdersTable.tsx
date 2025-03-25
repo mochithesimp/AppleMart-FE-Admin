@@ -1,94 +1,105 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, Eye } from "lucide-react";
 import "./OrdersTable.css";
-
-interface Order {
-	id: string;
-	customer: string;
-	total: number;
-	status: string;
-	date: string;
-}
-
-const orderData: Order[] = [
-	{ id: "ORD001", customer: "John Doe", total: 235.4, status: "Delivered", date: "2023-07-01" },
-	{ id: "ORD002", customer: "Jane Smith", total: 412.0, status: "Processing", date: "2023-07-02" },
-	{ id: "ORD003", customer: "Bob Johnson", total: 162.5, status: "Shipped", date: "2023-07-03" },
-	{ id: "ORD004", customer: "Alice Brown", total: 750.2, status: "Pending", date: "2023-07-04" },
-	{ id: "ORD005", customer: "Charlie Wilson", total: 95.8, status: "Delivered", date: "2023-07-05" },
-	{ id: "ORD006", customer: "Eva Martinez", total: 310.75, status: "Processing", date: "2023-07-06" },
-	{ id: "ORD007", customer: "David Lee", total: 528.9, status: "Shipped", date: "2023-07-07" },
-	{ id: "ORD008", customer: "Grace Taylor", total: 189.6, status: "Delivered", date: "2023-07-08" },
-];
+import useOrderData from "./useOrderData";
+import { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend } from "./HandleOrder";
 
 const OrdersTable: React.FC = () => {
-	const [searchTerm, setSearchTerm] = useState<string>("");
-	const [filteredOrders, setFilteredOrders] = useState<Order[]>(orderData);
+  const { orderData, searchTerm, setSearchTerm } = useOrderData();
 
-	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const term = e.target.value.toLowerCase();
-		setSearchTerm(term);
-		const filtered = orderData.filter(
-			(order) => order.id.toLowerCase().includes(term) || order.customer.toLowerCase().includes(term)
-		);
-		setFilteredOrders(filtered);
-	};
+  const { handleOrderConfirm } = useHandleOrderConfirm();
+  const { handleCancelOrder } = useHandleCancelOrder();
+  const { handleOrderSend } = useHandleOrderSend();
 
-	return (
-		<motion.div
-			className='orders-container'
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ delay: 0.4 }}
-		>
-			<div className='orders-header'>
-				<h2 className='orders-title'>Order List</h2>
-				<div className='search-container'>
-					<input
-						type='text'
-						placeholder='Search orders...'
-						className='search-input'
-						value={searchTerm}
-						onChange={handleSearch}
-					/>
-					<Search className='search-icon' size={18} />
-				</div>
-			</div>
+  return (
+    <motion.div
+      className="orders-container"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4 }}
+    >
+      <div className="orders-header">
+        <h2 className="orders-title">Order List</h2>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search orders by status..."
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Search className="search-icon" size={18} />
+        </div>
+      </div>
 
-			<div className='table-container'>
-				<table className='orders-table'>
-					<thead>
-						<tr>
-							<th>Order ID</th>
-							<th>Customer</th>
-							<th>Total</th>
-							<th>Status</th>
-							<th>Date</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
+      <div className="table-container">
+        <table className="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Payment Method</th>
+              <th>Address</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-					<tbody>
-						{filteredOrders.map((order) => (
-							<motion.tr key={order.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-								<td>{order.id}</td>
-								<td>{order.customer}</td>
-								<td>${order.total.toFixed(2)}</td>
-								<td className={`status ${order.status.toLowerCase()}`}>{order.status}</td>
-								<td>{order.date}</td>
-								<td>
-									<button className='action-button'>
-										<Eye size={18} />
-									</button>
-								</td>
-							</motion.tr>
-						))}
-					</tbody>
-				</table>
-			</div>
-		</motion.div>
-	);
+          <tbody>
+            {orderData.map((order, index) => (
+              <motion.tr
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <td>{order.orderID}</td>
+                <td>{order.paymentMethod}</td>
+                <td>{order.address}</td>
+                <td>${order.total.toFixed(2)}</td>
+                <td className={`status ${order.orderStatus.toLowerCase()}`}>
+                  {order.orderStatus}
+                </td>
+                <td>{order.orderDate}</td>
+                <td>
+                  <div className="flex">
+                    <button className="action-button mr-5">
+                      <Eye size={18} />
+                    </button>
+                    {order.orderStatus === "Pending" && (
+                      <>
+                        <button
+                          className="confirm-button cursor-pointer"
+                          onClick={() => handleOrderConfirm(order.orderID)}
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          className="confirm-button cursor-pointer ml-5"
+                          onClick={() => handleCancelOrder(order.orderID)}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    )}
+                    {order.orderStatus === "Processing" && (
+                      <button
+                        className="send-button cursor-pointer"
+                        onClick={() => handleOrderSend(order.orderID)}
+                      >
+                        Send
+                      </button>
+                    )}				
+                  </div>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </motion.div>
+  );
 };
 
 export default OrdersTable;
