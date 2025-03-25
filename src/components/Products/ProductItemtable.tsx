@@ -39,8 +39,8 @@ const ProductItemsTable = () => {
       const productImgsResult = await getProductImgs();
 
       // Kiểm tra nếu dữ liệu hợp lệ
-      if (productItemsResult?.$values && productImgsResult?.$values) {
-        const productItems = productItemsResult.$values;
+      if (productItemsResult?.items.$values && productImgsResult?.$values) {
+        const productItems = productItemsResult.items.$values;
         const productImgs = productImgsResult.$values;
 
         // Nhóm ảnh theo productItemID
