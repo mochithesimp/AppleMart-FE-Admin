@@ -72,7 +72,8 @@ export const orderCancel = async (orderId: number) => {
     );
     return res;
   } catch (error) {
-    console.log(error);
+    console.error("Error in orderCancel:", error);
+    return null;
   }
 };
 
@@ -90,16 +91,17 @@ export const orderConfirm = async (orderId: number) => {
     );
     return res;
   } catch (error) {
-    console.log(error);
+    console.error("Error in orderConfirm:", error);
+    return null;
   }
 };
 
-export const orderSend = async (orderId: number) => {
+export const orderSend = async (orderId: number, shipperId: string = "54448292-adeb-44a8-9a97-8d94987b23ac") => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.put(
-      `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=54448292-adeb-44a8-9a97-8d94987b23ac`,
-      {}, 
+      `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -108,7 +110,8 @@ export const orderSend = async (orderId: number) => {
     );
     return res;
   } catch (error) {
-    console.log(error);
+    console.error("Error in orderSend:", error);
+    return null;
   }
 };
 
