@@ -3,18 +3,15 @@ import { swal } from "../../import/import-another";
 import * as signalR from "@microsoft/signalr";
 import { useEffect, useRef } from "react";
 
-// Setup notification connection hook
 const useNotificationConnection = () => {
   const notificationConnectionRef = useRef<signalR.HubConnection | null>(null);
 
   useEffect(() => {
-    // Set up the notification connection when the component mounts
     const token = localStorage.getItem("token");
     if (token) {
       setupNotificationConnection(token);
     }
 
-    // Clean up the connection when the component unmounts
     return () => {
       if (notificationConnectionRef.current) {
         notificationConnectionRef.current.stop();
@@ -87,24 +84,29 @@ const useHandleCancelOrder = () => {
           try {
             const response = await orderCancel(orderId);
             if (response && response.status >= 200 && response.status < 300) {
-              // The order was successfully cancelled
-
-              // Get the user ID from the order response to send a notification directly to them
-              // The notification is handled by the server in the OrderController,
-              // but we need to inform the customer here for completeness
 
               if (response.data && response.data.userId) {
                 const userId = response.data.userId;
-                await sendDirectNotification(
+                const notificationSent = await sendDirectNotification(
                   userId,
                   "Order Cancelled",
-                  `Dear customer, your Order (${orderId}) has been canceled by Moderators.`
+                  `Dear customer, your Order (#${orderId}) has been canceled by Moderators.`
                 );
-              }
 
-              swal("Success!", "Order was canceled!", "success").then(() => {
-                window.location.reload();
-              });
+                if (notificationSent) {
+                  console.log(`Real-time notification sent to user ${userId}`);
+                } else {
+                  console.warn(` Could not send real-time notification to user ${userId}`);
+                }
+
+                swal("Success!", "Order canceled! User has been notified.", "success").then(() => {
+                  window.location.reload();
+                });
+              } else {
+                swal("Success!", "Order was canceled!", "success").then(() => {
+                  window.location.reload();
+                });
+              }
             } else {
               throw new Error(response?.data?.message || "Failed to cancel order");
             }
@@ -145,19 +147,28 @@ const useHandleOrderConfirm = () => {
           try {
             const response = await orderConfirm(orderId);
             if (response && response.status >= 200 && response.status < 300) {
-              // Get the user ID from the response to send a notification
               if (response.data && response.data.userId) {
                 const userId = response.data.userId;
-                await sendDirectNotification(
+                const notificationSent = await sendDirectNotification(
                   userId,
                   "Order Confirmed",
-                  `Dear customer, your Order (${orderId}) has been confirmed. A shipper will be assigned soon to deliver to you.`
+                  `Dear customer, your Order (#${orderId}) has been confirmed. A shipper will be assigned soon to deliver to you.`
                 );
-              }
 
-              swal("Success!", "Order was confirmed!", "success").then(() => {
-                window.location.reload();
-              });
+                if (notificationSent) {
+                  console.log(` Real-time notification sent to user ${userId}`);
+                } else {
+                  console.warn(` Could not send real-time notification to user ${userId}`);
+                }
+
+                swal("Success!", "Order confirmed! User has been notified.", "success").then(() => {
+                  window.location.reload();
+                });
+              } else {
+                swal("Success!", "Order was confirmed!", "success").then(() => {
+                  window.location.reload();
+                });
+              }
             } else {
               throw new Error(response?.data?.message || "Failed to confirm order");
             }
@@ -198,19 +209,31 @@ const useHandleOrderSend = () => {
           try {
             const response = await orderSend(orderId);
             if (response && response.status >= 200 && response.status < 300) {
-              // Get the user ID from the response to send a notification
-              if (response.data && response.data.userId) {
+              if (response.data) {
                 const userId = response.data.userId;
-                await sendDirectNotification(
+                const shipperName = response.data.shipperName || "our delivery team";
+                const shipperPhone = response.data.shipperPhone || "N/A";
+
+                const notificationSent = await sendDirectNotification(
                   userId,
                   "Order Shipped",
-                  `Dear customer, your Order (${orderId}) has been shipped and is on its way to you.`
+                  `Dear customer, your Order (#${orderId}) has been assigned to shipper ${shipperName} (Phone: ${shipperPhone}). Your package is on its way to you!`
                 );
-              }
 
-              swal("Success!", "Order was sent to shipper!", "success").then(() => {
-                window.location.reload();
-              });
+                if (notificationSent) {
+                  console.log(`Real-time notification sent to user ${userId}`);
+                } else {
+                  console.warn(`Could not send real-time notification to user ${userId}`);
+                }
+
+                swal("Success!", `Order was sent to shipper ${shipperName}! User has been notified.`, "success").then(() => {
+                  window.location.reload();
+                });
+              } else {
+                swal("Success!", "Order was sent to shipper!", "success").then(() => {
+                  window.location.reload();
+                });
+              }
             } else {
               throw new Error(response?.data?.message || "Failed to send order");
             }
