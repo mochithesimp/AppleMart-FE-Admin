@@ -7,7 +7,7 @@ import swal from "sweetalert";
 import { ImageUpload } from "../Firebase/ImageUpload";
 import {
   deleteProductItems,
-  getProductItems,
+  search,
   updateProductItem,
 } from "../../apiServices/ProductServices/productItemServices";
 import { getProductImgs } from "../../apiServices/ProductServices/productImgSevices";
@@ -34,8 +34,13 @@ const ProductItemsTable = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Gọi API lấy danh sách productItems và productImgs
-      const productItemsResult = await getProductItems();
+      const queryParams = new URLSearchParams();
+
+      if (searchTerm) {
+        queryParams.append("SearchTerm", searchTerm);
+      }
+
+      const productItemsResult = await search(queryParams);
       const productImgsResult = await getProductImgs();
 
       // Kiểm tra nếu dữ liệu hợp lệ
@@ -75,7 +80,7 @@ const ProductItemsTable = () => {
     };
 
     fetchData();
-  }, []);
+  }, [searchTerm]);
 
   // delete productItem------------------------------------------------------
   const deleteProductItem = async (productItemId: number) => {
@@ -218,16 +223,6 @@ const ProductItemsTable = () => {
     }
   };
 
-  // hander search ------------------------------------------------------------------------------
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = productItems.filter((product) =>
-      product.name.toLowerCase().includes(term)
-    );
-    setProductItems(filtered);
-  };
-
   return (
     <motion.div
       className="products-container"
@@ -246,8 +241,8 @@ const ProductItemsTable = () => {
             <input
               type="text"
               placeholder="Search products..."
-              onChange={handleSearch}
               value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Search className="search-icon" size={18} />
           </div>

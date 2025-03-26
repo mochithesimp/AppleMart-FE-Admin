@@ -70,7 +70,8 @@
 .product-image {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 30%;
+  margin-top: 10px;
 }
 
 .edit-btn {

@@ -1,5 +1,5 @@
 import ResgiterForm from "./Register-form";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
@@ -12,7 +12,7 @@ interface LoginFormProps {
   activeForm: "login" | "register" | "forget";
   setActiveForm: (form: "login" | "register" | "forget") => void;
 }
-const LoginForm: React.FC<LoginFormProps> = ({ activeForm, setActiveForm }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ activeForm }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -136,13 +136,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ activeForm, setActiveForm }) => {
               ></i>
             </div>
             <div className="forgot-pass">
-              <NavLink
+              {/* <NavLink
                 to="/ForgetPass"
                 className={`${activeForm === "forget" ? "active-btn" : ""}`}
                 onClick={() => setActiveForm("forget")}
               >
                 Forgot Password?
-              </NavLink>
+              </NavLink> */}
             </div>
             <div className="input-box">
               <button
@@ -160,8 +160,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ activeForm, setActiveForm }) => {
           </div>
           <div className="social-login">
             <GoogleLogin />
-            <i className="bx bxl-facebook"></i>
-            <i className="bx bxl-github"></i>
+            {/* <i className="bx bxl-facebook"></i>
+            <i className="bx bxl-github"></i> */}
           </div>
         </div>
       </form>

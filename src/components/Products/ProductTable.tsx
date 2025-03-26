@@ -5,7 +5,7 @@ import "./ProductTable.css";
 import { aProduct, iCategory } from "../../interfaces";
 import {
   deleteProducts,
-  getProduct,
+  search,
   updateProduct,
 } from "../../apiServices/ProductServices/productServices";
 import { getCategory } from "../../apiServices/CategoryServices/categoryServices";
@@ -23,15 +23,22 @@ const ProductsTable = () => {
   // Get all product-------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getProduct();
-      if (result && result.$values) {
-        setAllProduct(result.$values);
+      const queryParams = new URLSearchParams();
+
+      if (searchTerm) {
+        queryParams.append("SearchName", searchTerm);
+      }
+
+      const result = await search(queryParams);
+
+      if (result && result.items.$values) {
+        setAllProduct(result.items.$values);
       } else {
         console.error("Data not found or invalid response structure");
       }
     };
     fetchData();
-  }, []);
+  }, [searchTerm]);
 
   // Get Category------------------------------------------------------
   useEffect(() => {
@@ -82,35 +89,36 @@ const ProductsTable = () => {
     }
   };
 
-// handle edit -----------------------------------------------------------------
-const handleEditClick = (product: aProduct) => {
-  setEditingProductId(product.productID);
-  setEditedData({
-    productID : product.productID,
-    categoryID: product.categoryID,
-    name: product.name,
-    description: product.description,
-    
-  });
-};
+  // handle edit -----------------------------------------------------------------
+  const handleEditClick = (product: aProduct) => {
+    setEditingProductId(product.productID);
+    setEditedData({
+      productID: product.productID,
+      categoryID: product.categoryID,
+      name: product.name,
+      description: product.description,
+    });
+  };
 
-// handle save----------------------------------------------------------------------
-const handleSave = async (productId: number) => {
-  try {
-    const response = await updateProduct(productId, editedData);
-    if (response) {
-      setAllProduct(allProduct.map(p => 
-        p.productID === productId ? {...p, ...editedData} : p
-      ));
-      setEditingProductId(null);
-      swal("Success!", "Product updated!", "success");
+  // handle save----------------------------------------------------------------------
+  const handleSave = async (productId: number) => {
+    try {
+      const response = await updateProduct(productId, editedData);
+      if (response) {
+        setAllProduct(
+          allProduct.map((p) =>
+            p.productID === productId ? { ...p, ...editedData } : p
+          )
+        );
+        setEditingProductId(null);
+        swal("Success!", "Product updated!", "success");
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
     }
-  } catch (error) {
-    console.error("Error updating product:", error);
-  }
-};
+  };
 
-// handle search ---------------------------------------------------------------------------
+  // handle search ---------------------------------------------------------------------------
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -179,9 +187,7 @@ const handleSave = async (productId: number) => {
                       }
                     />
                   ) : (
-                    <>                    
-                      {product.name}
-                    </>
+                    <>{product.name}</>
                   )}
                 </td>
                 <td>
@@ -255,5 +261,3 @@ const handleSave = async (productId: number) => {
 };
 
 export default ProductsTable;
-
-

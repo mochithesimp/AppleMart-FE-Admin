@@ -1,10 +1,10 @@
 import "./SettingsPage.css"; 
 import Header from "../../../components/Header/Header";
-import ConnectedAccounts from "../../../components/Settings/ConnectedAccounts";
-import DangerZone from "../../../components/Settings/DangerZone";
-import Notifications from "../../../components/Settings/Notifications";
+// import ConnectedAccounts from "../../../components/Settings/ConnectedAccounts";
+// import DangerZone from "../../../components/Settings/DangerZone";
+// import Notifications from "../../../components/Settings/Notifications";
 import Profile from "../../../components/Settings/Profile";
-import Security from "../../../components/Settings/Security";
+// import Security from "../../../components/Settings/Security";
 
 const SettingsPage: React.FC = () => {
 	return (
@@ -12,10 +12,10 @@ const SettingsPage: React.FC = () => {
 			<Header title='Settings' />
 			<main className='settings-content'>
 				<Profile />
-				<Notifications />
+				{/* <Notifications />
 				<Security />
 				<ConnectedAccounts />
-				<DangerZone />
+				<DangerZone /> */}
 			</main>
 		</div>
 	);

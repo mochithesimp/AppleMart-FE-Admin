@@ -7,11 +7,14 @@ import { createProductItem } from "../../../apiServices/ProductServices/productI
 import { aProduct } from "../../../interfaces";
 import { getProduct } from "../../../apiServices/ProductServices/productServices";
 import { addProductImgs } from "../../../apiServices/ProductServices/productImgSevices";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 interface AddProductFormProps {
   onClose: () => void;
   onSuccess: () => void;
 }
+const MySwal = withReactContent(Swal);
 
 const AddProductForm: React.FC<AddProductFormProps> = ({
   onClose,
@@ -98,6 +101,15 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
       return;
     }
 
+    MySwal.fire({
+      title: "Processing...",
+      text: "Please wait a moment.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
       // tạo productItem nhưng chưa có ảnhảnh
       const response = await createProductItem(newProduct);
@@ -123,19 +135,28 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
         productItemID: newProductItemID,
       });
 
-      swal("Success!", "Product created with images!", "success").then(() => {
+      MySwal.fire({
+        icon: "success",
+        title: "Create successful!",
+        text: "Product created with images!",
+        timer: 2000,
+        showConfirmButton: false,
+      }).then(() => {
         onSuccess();
         onClose();
+        window.location.reload();
       });
+      
+      
     } catch (error) {
       console.error("Error creating product with images:", error);
       swal("Error", "Something went wrong!", "error");
     }
-  };
+  };  
 
   return (
     <div className="add-product-form">
-      <h3>Add New Product</h3>
+      <h3>Add New Product Item</h3>
 
       <select
         value={newProduct.productID ?? ""}

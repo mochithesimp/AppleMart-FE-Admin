@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Edit, Search, Save, Trash2, OctagonX } from "lucide-react";
+import { Edit, Save, Trash2, OctagonX } from "lucide-react";
 import { useEffect, useState } from "react";
 import { iUser } from "../../interfaces";
 import swal from "sweetalert";
@@ -11,7 +11,7 @@ import {
 import "./UsersTable.css"
 
 const UsersTable = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  // const [searchTerm, setSearchTerm] = useState<string>("");
   const [allUser, setAllUser] = useState<iUser[]>([]);
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [editedData, setEditedData] = useState<Partial<iUser>>({});
@@ -80,15 +80,6 @@ const UsersTable = () => {
     }
   };
 
-  // handle search ---------------------------------------------------------------------------
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = allUser.filter((user) =>
-      user.name.toLowerCase().includes(term)
-    );
-    setAllUser(filtered);
-  };
 
   return (
     <motion.div
@@ -100,7 +91,7 @@ const UsersTable = () => {
       <div className="products-header">
         <h2>User List</h2>
         <div style={{ display: "flex" }}>
-          <div className="search-box">
+          {/* <div className="search-box">
             <input
               type="text"
               placeholder="Search users..."
@@ -108,7 +99,7 @@ const UsersTable = () => {
               value={searchTerm}
             />
             <Search className="search-icon" size={18} />
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="table-wrapper">

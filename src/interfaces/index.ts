@@ -74,6 +74,21 @@ export interface OrderDetail {
   price: number;
 }
 
+export interface ProductItemAttribute {
+  productItemAttributeID: number;
+  productItemID: number;
+  attributeID: number;
+  value: string;
+  isDeleted: boolean;
+}
+
+export interface Attribute {
+  attributeID: number;
+  attributeName: number;
+  dataType: number;
+  categoryID: number;
+}
+
 
 // interface ProductItemResponse {
 //   $id: string;

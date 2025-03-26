@@ -52,3 +52,13 @@ export const deleteProducts = async (productId: number) => {
     console.log(error);
   }
 };
+
+export const search = async (queryParams: URLSearchParams) => {
+  try {
+    const res = await request.get("Product", { params: queryParams });
+    // console.log("check data search: ", res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
