@@ -23,7 +23,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <button className="profile-edit-btn">Edit Profile</button>
+      {/* <button className="profile-edit-btn">Edit Profile</button> */}
 
       <Link
         to="/login"

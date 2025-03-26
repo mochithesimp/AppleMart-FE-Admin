@@ -23,12 +23,12 @@ const LoginPage = () => {
             >
               Sign In
             </button>
-            <button
+            {/* <button
               className={`btn ${activeForm === "register" ? "active-btn" : ""}`}
               onClick={() => setActiveForm("register")}
             >
               Sign Up
-            </button>
+            </button> */}
           </div>
           <LoginForm activeForm={activeForm} setActiveForm={setActiveForm} />
         </div>
