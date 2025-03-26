@@ -14,15 +14,16 @@ export const getStatCardRevenue = async () => {
     try {
       const res = await request.get("/Admin/get-total-revenue?");
       //console.log("check data add: ", res);
-      return res;
+      return res.totalRevenue;
     } catch (error) {
       console.log(error);
+      return 0;
     }
   };
 
-  export const getStatCardTopSale = async () => {
+  export const getStatTopProduct = async () => {
     try {
-      const res = await request.get("/Admin/get-top-selling-product-items");
+      const res = await request.get("/Admin/total-products?${productId}");
       //console.log("check data add: ", res);
       return res;
     } catch (error) {
