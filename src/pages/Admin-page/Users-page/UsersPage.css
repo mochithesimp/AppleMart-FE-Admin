@@ -12,6 +12,7 @@
     padding: 1.5rem;
     flex-grow: 1;
     margin-top: 60px;
+    width: 85vw;
 }
 
 .stats-grid {
