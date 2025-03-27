@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Search, Eye } from "lucide-react";
 import "./OrdersTable.css";
 import useOrderData from "./useOrderData";
-import { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend } from "./HandleOrder";
+import { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend, useHandleApproveRefund } from "./HandleOrder";
 
 const OrdersTable: React.FC = () => {
   const { orderData, searchTerm, setSearchTerm } = useOrderData();
@@ -10,6 +10,7 @@ const OrdersTable: React.FC = () => {
   const { handleOrderConfirm } = useHandleOrderConfirm();
   const { handleCancelOrder } = useHandleCancelOrder();
   const { handleOrderSend } = useHandleOrderSend();
+  const { handleApproveRefund } = useHandleApproveRefund();
 
   return (
     <motion.div
@@ -90,7 +91,15 @@ const OrdersTable: React.FC = () => {
                       >
                         Send
                       </button>
-                    )}				
+                    )}
+                    {order.orderStatus === "RefundRequested" && (
+                      <button
+                        className="approve-refund-button cursor-pointer"
+                        onClick={() => handleApproveRefund(order.orderID)}
+                      >
+                        Approve Refund
+                      </button>
+                    )}
                   </div>
                 </td>
               </motion.tr>
