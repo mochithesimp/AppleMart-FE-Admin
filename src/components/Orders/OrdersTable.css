@@ -104,3 +104,17 @@
 .action-button:hover {
 	color: #6366f1;
 }
+
+.approve-refund-button {
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 4px;
+	font-size: 14px;
+	transition: background-color 0.3s ease;
+}
+
+.approve-refund-button:hover {
+	background-color: #45a049;
+}
