@@ -64,8 +64,6 @@ const useNotificationConnection = () => {
 };
 
 const useHandleCancelOrder = () => {
-  const { sendDirectNotification } = useNotificationConnection();
-
   const handleCancelOrder = async (orderId: number) => {
     try {
       const token = localStorage.getItem("token");
@@ -85,29 +83,10 @@ const useHandleCancelOrder = () => {
           try {
             const response = await orderCancel(orderId);
             if (response && response.status >= 200 && response.status < 300) {
-
-              if (response.data && response.data.userId) {
-                const userId = response.data.userId;
-                const notificationSent = await sendDirectNotification(
-                  userId,
-                  "Order Cancelled",
-                  `Dear customer, your Order (#${orderId}) has been canceled by Moderators.`
-                );
-
-                if (notificationSent) {
-                  console.log(`Real-time notification sent to user ${userId}`);
-                } else {
-                  console.warn(` Could not send real-time notification to user ${userId}`);
-                }
-
-                swal("Success!", "Order canceled! User has been notified.", "success").then(() => {
-                  window.location.reload();
-                });
-              } else {
-                swal("Success!", "Order was canceled!", "success").then(() => {
-                  window.location.reload();
-                });
-              }
+              // Notification is already sent by the backend through the API call
+              swal("Success!", "Order canceled! User has been notified.", "success").then(() => {
+                window.location.reload();
+              });
             } else {
               throw new Error(response?.data?.message || "Failed to cancel order");
             }
@@ -127,8 +106,7 @@ const useHandleCancelOrder = () => {
 };
 
 const useHandleOrderConfirm = () => {
-  const { sendDirectNotification } = useNotificationConnection();
-
+  // We don't need the notification connection since backend handles notifications
   const handleOrderConfirm = async (orderId: number) => {
     try {
       const token = localStorage.getItem("token");
@@ -148,20 +126,8 @@ const useHandleOrderConfirm = () => {
           try {
             const response = await orderConfirm(orderId);
             if (response && response.status >= 200 && response.status < 300) {
+              // Backend already sends the "Order Confirmed" notification
               if (response.data && response.data.userId) {
-                const userId = response.data.userId;
-                const notificationSent = await sendDirectNotification(
-                  userId,
-                  "Order Confirmed",
-                  `Dear customer, your Order (#${orderId}) has been confirmed. A shipper will be assigned soon to deliver to you.`
-                );
-
-                if (notificationSent) {
-                  console.log(` Real-time notification sent to user ${userId}`);
-                } else {
-                  console.warn(` Could not send real-time notification to user ${userId}`);
-                }
-
                 swal("Success!", "Order confirmed! User has been notified.", "success").then(() => {
                   window.location.reload();
                 });
