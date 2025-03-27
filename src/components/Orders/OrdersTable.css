@@ -118,3 +118,57 @@
 .approve-refund-button:hover {
 	background-color: #45a049;
 }
+
+.popup-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(59, 59, 59,0.9); 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	
+  }
+  
+  .popup-box {
+	background: white;
+	width: 400px;
+	max-width: 90%;
+	padding: 20px;
+	border-radius: 12px;
+	box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+	position: relative;
+	text-align: center;
+  }
+  
+  .popup-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 15px;
+  }
+  
+  .close-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+  }
+  
+  .popup-content {
+	text-align: left;
+  }
+  
+  .product-list {
+	margin-top: 10px;
+	padding: 0;
+	list-style: none;
+  }
+  
+  .product-item {
+	padding: 8px 0;
+	border-bottom: 1px solid #ddd;
+  }
+  

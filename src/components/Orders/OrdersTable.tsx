@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { Search, Eye } from "lucide-react";
+import { Search, Eye, X } from "lucide-react";
 import "./OrdersTable.css";
 import useOrderData from "./useOrderData";
 import { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend, useHandleApproveRefund } from "./HandleOrder";
+import { useState } from "react";
+import { aOrder } from "../../interfaces";
 
 const OrdersTable: React.FC = () => {
   const { orderData, searchTerm, setSearchTerm } = useOrderData();
@@ -11,7 +13,15 @@ const OrdersTable: React.FC = () => {
   const { handleCancelOrder } = useHandleCancelOrder();
   const { handleOrderSend } = useHandleOrderSend();
   const { handleApproveRefund } = useHandleApproveRefund();
+  const [selectedOrder, setSelectedOrder] = useState<aOrder | null>(null);
+  
+  const handleViewDetails = (order: aOrder) => {
+    setSelectedOrder(order);
+  };
 
+  const handleClosePopup = () => {
+    setSelectedOrder(null);
+  };
   return (
     <motion.div
       className="orders-container"
@@ -65,7 +75,9 @@ const OrdersTable: React.FC = () => {
                 <td>{order.orderDate}</td>
                 <td>
                   <div className="flex">
-                    <button className="action-button mr-5">
+                    <button 
+                    className="action-button mr-5"
+                    onClick={() => handleViewDetails(order)}>
                       <Eye size={18} />
                     </button>
                     {order.orderStatus === "Pending" && (
@@ -107,6 +119,36 @@ const OrdersTable: React.FC = () => {
           </tbody>
         </table>
       </div>
+      {selectedOrder && (
+        <div className="popup-overlay">
+          <motion.div
+            className="popup-container"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="popup-header">
+              <h3>Order Details</h3>
+              <button className="close-button" onClick={handleClosePopup}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="popup-content">
+              <p><strong>Customer Name:</strong> </p>
+              <p><strong>Phone:</strong></p>
+              <p><strong>Email:</strong> </p>
+              <p><strong>Address:</strong></p>
+              <h4>Products:</h4>
+              {/* <ul>
+                {selectedOrder.products.map((product, idx) => (
+                  <li key={idx}>{product.name} - ${product.price} x {product.quantity}</li>
+                ))}
+              </ul> */}
+            </div>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   );
 };
