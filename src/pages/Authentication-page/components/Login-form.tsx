@@ -33,7 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ activeForm }) => {
 
         const role = getRoleFromToken(accessToken);
 
-        if (role === "Customer") {
+        if (role === "Customer" || role === "Shipper") {
           swal({
             title: "Access Denied",
             text: "You do not have permission to access this page.",
@@ -80,8 +80,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ activeForm }) => {
             },
           });
           setIsLogin(false);
-        } else if (error.response?.status === 400) {
+        } else if (error.response?.status === 400 || error.response?.status === 401) {
           swal("Validation Error", "Incorrect Account or Password", "error");
+          setIsLogin(false);
         } else {
           // Handle other status codes
           console.error("Login failed:", error.response?.status);

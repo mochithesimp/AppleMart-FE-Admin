@@ -89,6 +89,30 @@ export interface Attribute {
   categoryID: number;
 }
 
+export interface bBlogs{
+  blogID: number;
+  title: string;
+  content: string;
+  author: string;
+  productId: number;
+  uploadDate: string;
+  updateDate: string;
+  view: number;
+  like: number;
+  isDeleted: boolean;
+  blogImages: BlogImages;
+}
+
+interface BlogImages {
+  $values: BlogImage[];
+}
+
+interface BlogImage {
+  blogImageID: number;
+  imageUrl: string;
+  blogId: number;
+}
+
 
 // interface ProductItemResponse {
 //   $id: string;

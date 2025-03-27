@@ -7,6 +7,8 @@ import UsersPage from "./pages/Admin-page/Users-page/UsersPage";
 import SalesPage from "./pages/Admin-page/Sales-page/SalesPage";
 import OrdersPage from "./pages/Admin-page/Orders-page/OrdersPage";
 import SettingsPage from "./pages/Admin-page/Settings-page/SettingsPage";
+import BlogsPage from "./pages/Admin-page/Blogs-page/BlogsPage";
+import ProtectedRoute from "./utils/protectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -19,10 +21,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/Admin",
-    element: <AdminPage />,
+    element: <ProtectedRoute><AdminPage /></ProtectedRoute>,
     children: [
       { path: "", element: <DashboardPage /> },
       { path: "products", element: <ProductsPage /> }, 
+      { path: "blogs", element: <BlogsPage /> },
       { path: "users", element: <UsersPage /> },
       { path: "sales", element: <SalesPage /> },
       { path: "orders", element: <OrdersPage /> },
