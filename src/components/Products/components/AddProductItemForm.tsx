@@ -45,12 +45,12 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
     null,
   ]);
 
-  // lấy các products----------------------------------------------------- 
+  // lấy các products-----------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
       const result = await getProduct();
-      if (result && result.$values) {
-        setProducts(result.$values);
+      if (result && result.items.$values) {
+        setProducts(result.items.$values);
       } else {
         console.error("Data not found or invalid response structure");
       }
@@ -69,7 +69,6 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
     setNewImages(updatedImages);
     setPreviewUrls(updatedPreviews);
   };
-
 
   // handle search ---------------------------------------------------------------
   const handleSave = async () => {
@@ -122,14 +121,14 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
       // lấy id
       const newProductItemID = response.data.productItemID;
 
-      // up ảnh lên firebase storage 
+      // up ảnh lên firebase storage
       const uploadedUrls = await Promise.all(
         newImages
           .filter((file): file is File => file !== null)
           .map((file) => ImageUpload(file, newProductItemID))
       );
 
-      // thêm các ảnh vào productItem đã tạo 
+      // thêm các ảnh vào productItem đã tạo
       await addProductImgs({
         imageUrl: uploadedUrls,
         productItemID: newProductItemID,
@@ -146,13 +145,15 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
         onClose();
         window.location.reload();
       });
-      
-      
     } catch (error) {
       console.error("Error creating product with images:", error);
-      swal("Error", "Something went wrong!", "error");
+      MySwal.fire({
+        title: "Error!",
+        text: "Error creating productItem.",
+        icon: "error",
+      });
     }
-  };  
+  };
 
   return (
     <div className="add-product-form">
@@ -231,6 +232,17 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
           </label>
         ))}
       </div>
+
+      {/* Nút thêm ảnh */}
+      <button
+        className="add-image-btn"
+        onClick={() => {
+          setNewImages([...newImages, null]);
+          setPreviewUrls([...previewUrls, null]);
+        }}
+      >
+        + Add Image 
+      </button>
 
       <div
         style={{ display: "flex", gap: "8px", justifyContent: "space-around" }}

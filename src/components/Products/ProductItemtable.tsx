@@ -13,6 +13,10 @@ import {
 import { getProductImgs } from "../../apiServices/ProductServices/productImgSevices";
 import ImageDropdown from "./ImageDropdown";
 import AddProductForm from "./components/AddProductItemForm";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+
+const MySwal = withReactContent(Swal);
 
 const ProductItemsTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -172,6 +176,15 @@ const ProductItemsTable = () => {
       return;
     }
 
+    MySwal.fire({
+      title: "Processing...",
+      text: "Please wait a moment.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
       let updatedImages = [...(editedData.updatedProductImgs || [])];
 
@@ -210,16 +223,24 @@ const ProductItemsTable = () => {
               : p
           )
         );
-        // setEditingProductItemId(null);
-        swal("Success!", "ProductItem updated!", "success").then(() => {
+        MySwal.fire({
+          icon: "success",
+          title: "Create successful!",
+          text: "ProductItem updated!",
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
           window.location.reload();
-          // setProductItems((prevItems) =>
-          //   prevItems.filter((product) => product.productItemID !== productItemId)
-          // );
         });
+      
       }
     } catch (error) {
       console.error("Error updating productItem:", error);
+      MySwal.fire({
+        title: "Error!",
+        text: "Error updating productItem.",
+        icon: "error",
+      });
     }
   };
 
