@@ -15,6 +15,8 @@ import ImageDropdown from "./ImageDropdown";
 import AddProductForm from "./components/AddProductItemForm";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import PaginationControls from "./components/PaginationControls";
+import { getTotalProduct } from "../../apiServices/AdminServices/adminServices";
 
 const MySwal = withReactContent(Swal);
 
@@ -22,6 +24,8 @@ const ProductItemsTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [productItems, setProductItems] = useState<ProductItem[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalProduct, setTotalProduct] = useState<number>(0);
   const [editingProductItemId, setEditingProductItemId] = useState<
     number | null
   >(null);
@@ -36,6 +40,22 @@ const ProductItemsTable = () => {
     newImages?: File[]; // Lưu danh sách file ảnh cần upload
   }>({});
 
+  const handlePageChange = (newPage: number) => {
+    setPageNumber(newPage);
+  };
+
+useEffect(() => {
+      const fetchData = async () => {
+        const result = await getTotalProduct();
+        if (result.totalCount) {
+          setTotalProduct(result.totalCount);
+        } else {
+          console.error("Data not found or invalid response structure");
+        }
+      };
+      fetchData();
+    }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       const queryParams = new URLSearchParams();
@@ -43,6 +63,8 @@ const ProductItemsTable = () => {
       if (searchTerm) {
         queryParams.append("SearchTerm", searchTerm);
       }
+
+      queryParams.append("PageNumber", pageNumber.toString());
 
       const productItemsResult = await search(queryParams);
       const productImgsResult = await getProductImgs();
@@ -84,7 +106,7 @@ const ProductItemsTable = () => {
     };
 
     fetchData();
-  }, [searchTerm]);
+  }, [pageNumber, searchTerm]);
 
   // delete productItem------------------------------------------------------
   const deleteProductItem = async (productItemId: number) => {
@@ -411,6 +433,11 @@ const ProductItemsTable = () => {
             ))}
           </tbody>
         </table>
+        <PaginationControls
+              totalProductItems={totalProduct}
+              pageNumber={pageNumber}
+              handlePageChange={handlePageChange}
+            />
       </div>
     </motion.div>
   );
