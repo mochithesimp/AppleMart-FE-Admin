@@ -220,12 +220,13 @@ const useHandleOrderSend = () => {
 };
 
 interface PayPalTransaction {
-  id: number;
+  id?: number;
+  transactionID?: number;
   status: string;
   amount: number;
   currency: string;
   paypalPaymentId: string;
-  orderID: number;
+  orderId: number;
 }
 
 const useHandleApproveRefund = () => {
@@ -315,7 +316,8 @@ const useHandleApproveRefund = () => {
         }
       } else if (order.paymentMethod === "PayPal") {
         try {
-          const transactionResponse = await axios.get<PayPalTransaction[]>(
+          // Get transactions for this order
+          const transactionResponse = await axios.get(
             `https://localhost:7140/api/Paypal/order/${orderId}/transactions`,
             {
               headers: {
@@ -324,36 +326,66 @@ const useHandleApproveRefund = () => {
             }
           );
 
-          if (!transactionResponse.data || transactionResponse.data.length === 0) {
-            throw new Error("No PayPal transaction found for this order");
+          console.log("Transaction response:", JSON.stringify(transactionResponse.data));
+
+          // Process transactions to find the completed one
+          let transactions = [];
+          if (Array.isArray(transactionResponse.data) && transactionResponse.data.length > 0) {
+            if (transactionResponse.data[0].$values) {
+              transactions = transactionResponse.data[0].$values;
+            } else {
+              transactions = transactionResponse.data;
+            }
+          } else if (transactionResponse.data && transactionResponse.data.$values) {
+            transactions = transactionResponse.data.$values;
           }
 
-          const transaction = transactionResponse.data.find(
-            (t: PayPalTransaction) => t.orderID === orderId && t.status === "COMPLETED"
+          console.log("Processed transactions:", transactions);
+
+          // Find the COMPLETED transaction
+          const transaction = transactions.find((t: PayPalTransaction) =>
+            t && t.status && t.status.toUpperCase() === 'COMPLETED' && t.orderId === orderId
           );
 
           if (!transaction) {
             throw new Error("No completed PayPal transaction found for this order");
           }
 
-          await axios.post(
-            `https://localhost:7140/api/Paypal/transaction/${transaction.id}/refund`,
+          console.log("Found transaction to refund:", transaction);
+
+          // Get the transaction ID for the API endpoint - handle both property naming conventions
+          const transactionId = transaction.transactionID || transaction.id;
+          if (!transactionId) {
+            throw new Error("Transaction ID is missing");
+          }
+
+          // Process the refund - directly call the transaction refund endpoint
+          console.log(`Processing refund for transaction ID: ${transactionId}`);
+
+          const refundResponse = await axios.post(
+            `https://localhost:7140/api/Paypal/transaction/${transactionId}/refund`,
             {},
             {
               headers: {
                 Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
               },
             }
           );
 
-          const updateModel = {
-            NewStatus: "Refunded"
-          };
+          console.log("Refund response:", refundResponse.data);
 
+          // Get the refund amount for display
+          let refundAmount = refundResponse.data?.amount || transaction.amount || order.total || 'the full payment';
+          if (typeof refundAmount === 'number') {
+            refundAmount = refundAmount.toFixed(2);
+          }
+
+          // Update order status to Refunded
           const statusResponse = await axios({
             method: 'put',
             url: `https://localhost:7140/api/Order/${orderId}/status`,
-            params: updateModel,
+            params: { NewStatus: "Refunded" },
             data: {},
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -361,22 +393,38 @@ const useHandleApproveRefund = () => {
             }
           });
 
-          if (statusResponse.status >= 200 && statusResponse.status < 300) {
-            if (statusResponse.data && statusResponse.data.userId) {
-              await sendDirectNotification(
-                statusResponse.data.userId,
-                "Refund Request Approved",
-                `Your refund request for Order #${orderId} has been approved. The refund amount of $${order.total} has been processed and will be credited back to your PayPal account.`
-              );
-            }
-
-            await swal("Success!", "PayPal refund processed successfully!", "success");
-            window.location.reload();
-          } else {
+          if (statusResponse.status < 200 || statusResponse.status >= 300) {
             throw new Error("Failed to update order status after PayPal refund");
           }
-        } catch (error: unknown) {
+
+          // The backend already sends a notification when order status changes to Refunded,
+          // so we don't need to send another notification from the frontend
+          console.log("Order status updated to Refunded. Backend will handle customer notification.");
+
+          // Show success message
+          await swal("Success!", `PayPal refund of $${refundAmount} processed successfully!`, "success");
+          window.location.reload();
+        } catch (error) {
           console.error("PayPal refund error:", error);
+
+          // Log detailed error information if available
+          if (error && typeof error === 'object' && 'response' in error) {
+            const axiosError = error as {
+              response?: {
+                status: number,
+                headers: Record<string, string>,
+                data: unknown
+              }
+            };
+            if (axiosError.response) {
+              console.log("=== REFUND ERROR DETAILS ===");
+              console.log("Status:", axiosError.response.status);
+              console.log("Headers:", JSON.stringify(axiosError.response.headers, null, 2));
+              console.log("Error Data:", JSON.stringify(axiosError.response.data, null, 2));
+              console.log("===========================");
+            }
+          }
+
           const errorMessage = error instanceof Error ? error.message : "Unknown error";
           swal("Error", `PayPal refund failed: ${errorMessage}`, "error");
         }
@@ -394,3 +442,4 @@ const useHandleApproveRefund = () => {
 };
 
 export { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend, useHandleApproveRefund };
+
