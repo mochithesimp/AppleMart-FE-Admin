@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import "./OrderDetailModal.css";
 import { aOrder, OrderDetail, ProductItem, ProductImg } from "../../../interfaces/index";
@@ -19,6 +20,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose }) =
     const fetchProducts = async () => {
       if (!order) return;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const orderDetails = (order.orderDetails as any)?.$values || [];
       
       
@@ -41,6 +43,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose }) =
         // Nhóm ảnh theo productItemID
         const imagesByProductItemID = productImgs.reduce(
           (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             acc: { [x: string]: any[] },
             img: { productItemID: string | number }
           ) => {
@@ -86,6 +89,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose }) =
   }
 
   // Ép kiểu orderDetails thành any để bỏ qua kiểm tra kiểu và truy cập $values
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const orderDetails = (order.orderDetails as any)?.$values || [];
   console.log("[OrderDetailModal] Danh sách orderDetails:", orderDetails);
 

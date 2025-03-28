@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Edit, Search, Trash2, Save, SquarePlus } from "lucide-react";
+import { Edit, Search, Trash2, Save, SquarePlus, OctagonX } from "lucide-react";
 import { useEffect, useState } from "react";
 import "./ProductTable.css";
 import { aProduct, iCategory } from "../../interfaces";
@@ -25,7 +25,7 @@ const ProductsTable = () => {
   const handlePageChange = (newPage: number) => {
     setPageNumber(newPage);
   };
-  
+
   // Get all product-------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
@@ -36,9 +36,9 @@ const ProductsTable = () => {
       }
       queryParams.append("PageNumber", pageNumber.toString());
       const result = await search(queryParams);
-      setTotalPages(result.totalPages)
-      console.log('total', result);
-      
+      setTotalPages(result.totalPages);
+      console.log("total", result);
+
       if (result && result.items.$values) {
         setAllProduct(result.items.$values);
       } else {
@@ -218,7 +218,6 @@ const ProductsTable = () => {
                   ) : (
                     product.categoryName
                   )}
-                  
                 </td>
                 <td>
                   {editingProductId === product.productID ? (
@@ -237,12 +236,20 @@ const ProductsTable = () => {
                 </td>
                 <td>
                   {editingProductId === product.productID ? (
-                    <button
-                      className="save-btn"
-                      onClick={() => handleSave(product.productID)}
-                    >
-                      <Save size={18} />
-                    </button>
+                    <>
+                      <button
+                        className="save-btn"
+                        onClick={() => handleSave(product.productID)}
+                      >
+                        <Save size={18} />
+                      </button>
+                      <button
+                        className="exit-btn"
+                        onClick={() => setEditingProductId(null)}
+                      >
+                        <OctagonX size={18} />
+                      </button>
+                    </>
                   ) : (
                     <>
                       <button

@@ -1,6 +1,6 @@
 import Header from "../../../components/Header/Header";
-import DailyOrders from "../../../components/Orders/DailyOrders";
-import OrderDistribution from "../../../components/Orders/OrderDistribution";
+// import DailyOrders from "../../../components/Orders/DailyOrders";
+// import OrderDistribution from "../../../components/Orders/OrderDistribution";
 import OrdersTable from "../../../components/Orders/OrdersTable";
 import "./OrdersPage.css";
 
@@ -10,10 +10,10 @@ const OrdersPage: React.FC = () => {
       <Header title="Orders" />
       <main className="Orders-content">
     
-        <div className="charts-grid">
+        {/* <div className="charts-grid">
           <DailyOrders />
           <OrderDistribution />
-        </div>
+        </div> */}
 
         <OrdersTable />
       </main>
