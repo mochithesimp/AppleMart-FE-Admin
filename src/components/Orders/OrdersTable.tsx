@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, Eye, Truck } from "lucide-react";
+import { Search, Eye } from "lucide-react";
 import "./OrdersTable.css";
 import useOrderData from "./useOrderData";
 import { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend, useHandleApproveRefund } from "./HandleOrder";
@@ -7,6 +7,13 @@ import { useEffect, useState } from "react";
 import OrderDetailModal from "./components/OrderDetailModal";
 import ShipperListModal from "./components/ShipperListModal";
 import { getTotalShipper } from "../../apiServices/ShipperServices/shipperServices";
+import { aOrder } from "../../interfaces";
+
+interface ShipperData {
+  id: string;
+  email: string;
+  pendingOrdersCount: number;
+}
 
 const OrdersTable: React.FC = () => {
   const { orderData, searchTerm, setSearchTerm } = useOrderData();
@@ -15,17 +22,17 @@ const OrdersTable: React.FC = () => {
   const { handleCancelOrder } = useHandleCancelOrder();
   const { handleOrderSend } = useHandleOrderSend();
   const { handleApproveRefund } = useHandleApproveRefund();
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [selectedOrder, setSelectedOrder] = useState<aOrder | null>(null);
   const [showShipperModal, setShowShipperModal] = useState(false);
-  const [shippers, setShippers] = useState<any[]>([]);
-  const [orderToAssign, setOrderToAssign] = useState<any>(null);
+  const [shippers, setShippers] = useState<ShipperData[]>([]);
+  const [orderToAssign, setOrderToAssign] = useState<aOrder | null>(null);
 
   useEffect(() => {
     const loadShippers = async () => {
       try {
         const data = await getTotalShipper();
-        console.log("data",data );
-        
+        console.log("data", data);
+
         setShippers(data);
       } catch (error) {
         console.error("Error fetching shippers:", error);
@@ -35,16 +42,11 @@ const OrdersTable: React.FC = () => {
   }, []);
 
   const handleSelectShipper = async (shipperId: string) => {
-    console.log("Selected Shipper ID:", shipperId);
     if (orderToAssign) {
       try {
         await handleOrderSend(orderToAssign.orderID, shipperId);
-        // orderToAssign.orderStatus = "Shipped";
-        
         setOrderToAssign(null);
         setShowShipperModal(false);
-        alert(`Shipper selected! ${shipperId}`);
-        
       } catch (error) {
         console.error("Error assigning shipper:", error);
       }
@@ -157,7 +159,7 @@ const OrdersTable: React.FC = () => {
       )}
       {showShipperModal && (
         <ShipperListModal
-          shippers={shippers.filter(shipper => shipper.pendingOrdersCount < 3)}
+          shippers={shippers}
           onSelectShipper={handleSelectShipper}
           onClose={() => setShowShipperModal(false)}
         />

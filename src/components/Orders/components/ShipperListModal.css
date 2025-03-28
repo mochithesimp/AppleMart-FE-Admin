@@ -39,9 +39,265 @@
 
   .shipper-select {
     width: 100%;
-    padding: 8px;
+    padding: 8px 12px;
     font-size: 16px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    margin-bottom: 16px;
+    margin: 10px 0 20px;
+    height: auto;
+    min-height: 45px;
+    overflow-y: auto;
+  }
+
+  /* When select has size attribute */
+  .shipper-select[size] {
+    max-height: 250px;
+    overflow-y: auto;
+    appearance: auto;
+    background-image: none;
+    padding-right: 12px;
+  }
+
+  .shipper-select option {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+  }
+
+  .shipper-select option:first-child {
+    font-weight: bold;
+    background-color: #f5f5f5;
+  }
+
+  .shipper-select option:hover:not(:disabled) {
+    background-color: #f0f7ff;
+  }
+
+  .shipper-select option:checked {
+    background-color: #e6f7ff;
+    color: #1890ff;
+  }
+
+  /* Style the option container for when there are many options */
+  .select-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Custom scrollbar styling */
+  select::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  select::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  select::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  select::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* Style for disabled options */
+  .shipper-select option:disabled {
+    background-color: #f0f0f0;
+    color: #888;
+  }
+
+  /* SweetAlert2 customization */
+  .swal2-popup {
+    width: 500px !important;
+    padding: 30px !important;
+    border-radius: 10px !important;
+  }
+
+  .swal2-title {
+    font-size: 1.5em !important;
+    margin-bottom: 20px !important;
+  }
+
+  .swal2-content {
+    padding: 0 !important;
+  }
+
+  .swal2-html-container {
+    margin: 1em 0 !important;
+    padding: 0 10px !important;
+  }
+
+  .shipper-popup-container {
+    padding: 10px 0;
+    min-height: 150px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .swal2-actions {
+    margin-top: 25px !important;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    transform: translateY(0);
+  }
+
+  .swal2-confirm {
+    background-color: #1890ff !important;
+    border-radius: 4px !important;
+    font-weight: 500 !important;
+    padding: 10px 24px !important;
+    font-size: 16px !important;
+  }
+
+  .swal2-cancel {
+    background-color: #f5f5f5 !important;
+    color: #333 !important;
+    border-radius: 4px !important;
+    font-weight: 500 !important;
+    padding: 10px 24px !important;
+    font-size: 16px !important;
+  }
+
+  .shipper-instructions {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  .large-swal-popup {
+    width: 600px !important;
+    max-width: 90vw !important;
+  }
+
+  .large-swal-html {
+    margin-top: 20px !important;
+    margin-bottom: 30px !important;
+  }
+
+  .large-swal-actions {
+    margin-top: 30px !important;
+  }
+
+  .shipper-options {
+    margin: 15px 0;
+  }
+
+  .shipper-radio-option {
+    padding: 10px 15px;
+    margin: 5px 0;
+    background-color: #f9f9f9;
+    border: 1px solid #e8e8e8;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+  }
+
+  .shipper-radio-option:hover {
+    background-color: #f0f7ff;
+    border-color: #d0e7ff;
+  }
+
+  .shipper-radio-option input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .shipper-radio-option label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 15px;
+  }
+
+  .unavailable-shippers {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed #ddd;
+  }
+
+  .unavailable-header {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .shipper-option.disabled {
+    padding: 8px 12px;
+    margin: 5px 0;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    color: #999;
+    opacity: 0.7;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .shipper-option.disabled .shipper-email {
+    font-weight: 500;
+  }
+
+  .shipper-option.disabled .shipper-orders {
+    font-size: 13px;
+  }
+
+  .no-shippers {
+    text-align: center;
+    padding: 20px;
+    color: #d9534f;
+    font-weight: 500;
+    background-color: #f2dede;
+    border-radius: 5px;
+  }
+
+  .selected-shipper-info {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #f0f7ff;
+    border: 1px solid #91d5ff;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: block !important;
+  }
+
+  .selected-shipper-info p {
+    margin: 0;
+    color: #1890ff;
+    font-size: 15px;
+  }
+
+  .selected-shipper-info strong {
+    color: #096dd9;
+    font-weight: 600;
   }
