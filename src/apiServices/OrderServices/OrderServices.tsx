@@ -47,7 +47,7 @@ export const search = async (queryParams: URLSearchParams) => {
 
 // export const orderConfirm = async (orderId: number, shipperId: string) => {
 //   try {
-//     const res = await axios.put(`https://localhost:7140/api/Order/${orderId}/status/${shipperId}`, {
+//     const res = await axios.put(`https://api.apple-mart.capybara.pro.vn/api/Order/${orderId}/status/${shipperId}`, {
 //       headers: {
 //         "Content-Type": "application/json",
 //       },
@@ -101,7 +101,7 @@ export const orderSend = async (orderId: number, shipperId: string = "54448292-a
   try {
     const token = localStorage.getItem("token");
     const res = await axios.put(
-        `${API_BASE_URL}/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
+      `${API_BASE_URL}/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
       {},
       {
         headers: {
