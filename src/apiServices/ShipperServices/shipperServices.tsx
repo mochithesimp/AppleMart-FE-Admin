@@ -6,7 +6,7 @@ export const getTotalShipper = async () => {
     // console.log(`Calling API to send order ${orderId} to shipper ${shipperId}`);
     const token = localStorage.getItem("token");
     const res = await request.get(
-      "Shipper/all",
+      "/api/Shipper/all",
       {
         headers: {
           Authorization: `Bearer ${token}`,

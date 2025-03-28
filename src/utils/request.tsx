@@ -1,7 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:7140/api";
+if (!API_BASE_URL) {
+  throw new Error("API_BASE_URL is not defined. Check your environment variables.");
+}
 const request = axios.create({
-  baseURL: "https://localhost:7140/api",
+  baseURL: API_BASE_URL,
 });
 
 export const get = async (path: string, options = {}) => {

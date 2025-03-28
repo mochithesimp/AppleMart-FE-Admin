@@ -1,9 +1,9 @@
 import axios from "axios";
 import request from "../../utils/request";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const getProductItems = async () => {
   try {
-    const res = await request.get(`ProductItem`);
+    const res = await request.get(`/api/ProductItem`);
     console.log("check data search: ", res);
     return res.data; // Trả về dữ liệu đúng
   } catch (error) {
@@ -14,7 +14,7 @@ export const getProductItems = async () => {
 
 export const getAllProductItem = async () => {
   try {
-    const res = await request.get(`ProductItem/showall`);
+    const res = await request.get(`/api/ProductItem/showall`);
     console.log("check data search: ", res);
     return res.data;
   } catch (error) {
@@ -27,7 +27,7 @@ export const createProductItem = async (formData: unknown) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      `https://localhost:7140/api/ProductItem`,
+      `${API_BASE_URL}/api/ProductItem`,
       formData,
       {
         headers: {
@@ -48,7 +48,7 @@ export const updateProductItem = async (
   try {
     const token = localStorage.getItem("token");
     const response = await axios.put(
-      `https://localhost:7140/api/ProductItem/${productId}`,
+      `${API_BASE_URL}/api/ProductItem/${productId}`,
       formData,
       {
         headers: {
@@ -66,7 +66,7 @@ export const deleteProductItems = async (productItemId: number) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.delete(
-      `https://localhost:7140/api/ProductItem/${productItemId}`,
+      `${API_BASE_URL}/api/ProductItem/${productItemId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ export const deleteProductItems = async (productItemId: number) => {
 
 export const search = async (queryParams: URLSearchParams) => {
   try {
-    const res = await request.get("ProductItem", { params: queryParams });
+    const res = await request.get("/api/ProductItem", { params: queryParams });
     // console.log("check data search: ", res);
     return res.data;
   } catch (error) {

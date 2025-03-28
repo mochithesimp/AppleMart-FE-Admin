@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import * as request from "../../utils/request";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getOrderList = async (queryParams: URLSearchParams) => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await request.get("Order/orders", {
+    const res = await request.get("/api/Order/orders", {
       params: queryParams,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,7 +23,7 @@ export const getOrderList = async (queryParams: URLSearchParams) => {
 export const getOrder = async (orderId: any) => {
   try {
     const token = localStorage.getItem("token");
-    const res = await request.get(`Order/${parseInt(orderId)}`, {
+    const res = await request.get(`/api/Order/${parseInt(orderId)}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -37,7 +37,7 @@ export const getOrder = async (orderId: any) => {
 
 export const search = async (queryParams: URLSearchParams) => {
   try {
-    const res = await request.get("Order/orders", { params: queryParams });
+    const res = await request.get("/api/Order/orders", { params: queryParams });
     // console.log("check data search: ", res);
     return res;
   } catch (error) {
@@ -63,7 +63,7 @@ export const orderCancel = async (orderId: number) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.put(
-      `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Cancelled&isCancelledByCustomer=false`,
+      `${API_BASE_URL}/api/Order/${orderId}/status?NewStatus=Cancelled&isCancelledByCustomer=false`,
       {}, // Phải có body, dù là object rỗng
       {
         headers: {
@@ -82,7 +82,7 @@ export const orderConfirm = async (orderId: number) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.put(
-      `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Processing`,
+      `${API_BASE_URL}/api/Order/${orderId}/status?NewStatus=Processing`,
       {},
       {
         headers: {
@@ -101,8 +101,7 @@ export const orderSend = async (orderId: number, shipperId: string = "54448292-a
   try {
     const token = localStorage.getItem("token");
     const res = await axios.put(
-      // `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
-        `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
+        `${API_BASE_URL}/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
       {},
       {
         headers: {

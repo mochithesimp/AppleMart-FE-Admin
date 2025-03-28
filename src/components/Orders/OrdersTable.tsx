@@ -9,6 +9,7 @@ import ShipperListModal from "./components/ShipperListModal";
 import { getTotalShipper } from "../../apiServices/ShipperServices/shipperServices";
 
 import { aOrder } from "../../interfaces";
+import { getOrder } from "../../apiServices/OrderServices/OrderServices";
 
 interface ShipperData {
   id: string;

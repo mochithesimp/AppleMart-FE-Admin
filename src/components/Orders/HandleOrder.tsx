@@ -181,7 +181,7 @@ const useHandleOrderConfirm = () => {
 const useHandleOrderSend = () => {
   // We need to keep sendDirectNotification even though it's not used in this hook
   // because it's used elsewhere in the codebase (e.g., useHandleApproveRefund)
-  const { sendDirectNotification, sendOrderAssignmentNotification } = useNotificationConnection();
+  const { sendOrderAssignmentNotification } = useNotificationConnection();
 
   const handleOrderSend = async (orderId: number, shipperId: string) => {
     try {

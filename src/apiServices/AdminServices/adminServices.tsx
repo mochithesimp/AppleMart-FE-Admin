@@ -4,7 +4,7 @@ export const getTotalProduct = async () => {
   try {
     const token = localStorage.getItem("token");
     const res = await request.get(
-      "Admin/total-products",
+      "/api/Admin/total-products",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ export const getTotalAllProduct = async () => {
   try {
     const token = localStorage.getItem("token");
     const res = await request.get(
-      "Product/showall",
+      "api/Product/showall",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ export const getTotalAllProduct = async () => {
 };
 export const getTotalRevenue = async () => {
   try {
-    const res = await request.get("Admin/get-total-revenue");
+    const res = await request.get("/api/Admin/get-total-revenue");
     //console.log("check data add: ", res);
     return res;
   } catch (error) {
