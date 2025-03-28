@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import OrderDetailModal from "./components/OrderDetailModal";
 import ShipperListModal from "./components/ShipperListModal";
 import { getTotalShipper } from "../../apiServices/ShipperServices/shipperServices";
+
 import { aOrder } from "../../interfaces";
 
 interface ShipperData {
@@ -14,6 +15,7 @@ interface ShipperData {
   email: string;
   pendingOrdersCount: number;
 }
+
 
 const OrdersTable: React.FC = () => {
   const { orderData, searchTerm, setSearchTerm } = useOrderData();
@@ -53,6 +55,28 @@ const OrdersTable: React.FC = () => {
     }
   };
 
+  const handleViewOrderDetails = async (orderId: number) => {
+    console.log(`[handleViewOrderDetails] Bắt đầu lấy chi tiết đơn hàng cho orderId: ${orderId}`);
+    try {
+      console.log("[handleViewOrderDetails] Gọi API getOrder...");
+      const orderDetails = await getOrder(orderId); // Gọi API để lấy chi tiết đơn hàng
+      console.log("[handleViewOrderDetails] Kết quả từ getOrder:", orderDetails);
+  
+      if (orderDetails) {
+        console.log("[handleViewOrderDetails] Dữ liệu đơn hàng hợp lệ:", orderDetails);
+        setSelectedOrder(orderDetails); // Lưu dữ liệu đơn hàng vào state
+        console.log("[handleViewOrderDetails] Đã lưu dữ liệu vào state selectedOrder:", orderDetails);
+      } else {
+        console.error("[handleViewOrderDetails] Không tìm thấy chi tiết đơn hàng cho ID:", orderId);
+        setSelectedOrder(null); // Đặt lại nếu không có dữ liệu
+      }
+    } catch (error) {
+      console.error("[handleViewOrderDetails] Lỗi khi lấy chi tiết đơn hàng:", error);
+      setSelectedOrder(null); // Đặt lại nếu có lỗi
+    } finally {
+      console.log("[handleViewOrderDetails] Kết thúc quá trình lấy chi tiết đơn hàng");
+    }
+  };
   return (
     <motion.div
       className="orders-container"
@@ -108,7 +132,7 @@ const OrdersTable: React.FC = () => {
                   <div className="flex">
                     <button
                       className="action-button mr-5"
-                      onClick={() => setSelectedOrder(order)}
+                      onClick={() => handleViewOrderDetails(order.orderID)}
                     >
                       <Eye size={18} />
                     </button>
