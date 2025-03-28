@@ -60,7 +60,31 @@ const useNotificationConnection = () => {
     }
   };
 
-  return { notificationConnection: notificationConnectionRef.current, sendDirectNotification };
+  const sendOrderAssignmentNotification = async (shipperId: string, orderId: number) => {
+    try {
+      if (notificationConnectionRef.current && notificationConnectionRef.current.state === "Connected") {
+        await notificationConnectionRef.current.invoke(
+          "SendOrderAssignmentNotification",
+          shipperId,
+          orderId
+        );
+        console.log("Order assignment notification sent successfully to shipper:", shipperId);
+        return true;
+      } else {
+        console.warn("Cannot send notification - connection not established");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error sending order assignment notification:", error);
+      return false;
+    }
+  };
+
+  return {
+    notificationConnection: notificationConnectionRef.current,
+    sendDirectNotification,
+    sendOrderAssignmentNotification
+  };
 };
 
 const useHandleCancelOrder = () => {
@@ -155,6 +179,10 @@ const useHandleOrderConfirm = () => {
 };
 
 const useHandleOrderSend = () => {
+  // We need to keep sendDirectNotification even though it's not used in this hook
+  // because it's used elsewhere in the codebase (e.g., useHandleApproveRefund)
+  const { sendDirectNotification, sendOrderAssignmentNotification } = useNotificationConnection();
+
   const handleOrderSend = async (orderId: number, shipperId: string) => {
     try {
       const token = localStorage.getItem("token");
@@ -176,9 +204,20 @@ const useHandleOrderSend = () => {
             const response = await orderSend(orderId, shipperId);
             console.log("Response from orderSend:", response);
             if (response && response.status >= 200 && response.status < 300) {
+              // Send a notification to the shipper
+              const notificationSent = await sendOrderAssignmentNotification(
+                shipperId,
+                orderId
+              );
+
+              if (notificationSent) {
+                console.log(`Order assignment notification sent to shipper ${shipperId} for order ${orderId}`);
+              } else {
+                console.warn(`Failed to send order assignment notification to shipper ${shipperId}`);
+              }
+
               console.log("Order sent successfully!");
               swal("Success!", "Order has been sent to the shipper!", "success").then(() => {
-                
                 window.location.reload();
                 console.log(`Order ${orderId} assigned to shipper ${shipperId}`);
               });
