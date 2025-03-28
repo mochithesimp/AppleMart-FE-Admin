@@ -9,6 +9,7 @@ import { getProduct } from "../../../apiServices/ProductServices/productServices
 import { addProductImgs } from "../../../apiServices/ProductServices/productImgSevices";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import { getTotalAllProduct } from "../../../apiServices/AdminServices/adminServices";
 
 interface AddProductFormProps {
   onClose: () => void;
@@ -48,9 +49,11 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
   // lấy các products-----------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getProduct();
-      if (result && result.items.$values) {
-        setProducts(result.items.$values);
+      const result = await getTotalAllProduct();
+      console.log("result", result);
+      
+      if (result && result.$values) {
+        setProducts(result.$values);
       } else {
         console.error("Data not found or invalid response structure");
       }

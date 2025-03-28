@@ -3,6 +3,8 @@ import { Search, Eye } from "lucide-react";
 import "./OrdersTable.css";
 import useOrderData from "./useOrderData";
 import { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend, useHandleApproveRefund } from "./HandleOrder";
+import { useState } from "react";
+import OrderDetailModal from "./components/OrderDetailModal";
 
 const OrdersTable: React.FC = () => {
   const { orderData, searchTerm, setSearchTerm } = useOrderData();
@@ -11,7 +13,7 @@ const OrdersTable: React.FC = () => {
   const { handleCancelOrder } = useHandleCancelOrder();
   const { handleOrderSend } = useHandleOrderSend();
   const { handleApproveRefund } = useHandleApproveRefund();
-
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
   return (
     <motion.div
       className="orders-container"
@@ -65,7 +67,10 @@ const OrdersTable: React.FC = () => {
                 <td>{order.orderDate}</td>
                 <td>
                   <div className="flex">
-                    <button className="action-button mr-5">
+                    <button
+                      className="action-button mr-5"
+                      onClick={() => setSelectedOrder(order)}
+                    >
                       <Eye size={18} />
                     </button>
                     {order.orderStatus === "Pending" && (
@@ -107,6 +112,9 @@ const OrdersTable: React.FC = () => {
           </tbody>
         </table>
       </div>
+      {selectedOrder && (
+        <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrder(null)} />
+      )}
     </motion.div>
   );
 };

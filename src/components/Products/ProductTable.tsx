@@ -11,6 +11,7 @@ import {
 import { getCategory } from "../../apiServices/CategoryServices/categoryServices";
 import swal from "sweetalert";
 import AddProductForm2 from "./components/AddProductForm";
+import PaginationControls from "./components/PaginationControls";
 
 const ProductsTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -19,7 +20,12 @@ const ProductsTable = () => {
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
   const [editedData, setEditedData] = useState<Partial<aProduct>>({});
   const [showAddForm, setShowAddForm] = useState(false);
-
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const handlePageChange = (newPage: number) => {
+    setPageNumber(newPage);
+  };
+  
   // Get all product-------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
@@ -28,9 +34,11 @@ const ProductsTable = () => {
       if (searchTerm) {
         queryParams.append("SearchName", searchTerm);
       }
-
+      queryParams.append("PageNumber", pageNumber.toString());
       const result = await search(queryParams);
-
+      setTotalPages(result.totalPages)
+      console.log('total', result);
+      
       if (result && result.items.$values) {
         setAllProduct(result.items.$values);
       } else {
@@ -38,7 +46,7 @@ const ProductsTable = () => {
       }
     };
     fetchData();
-  }, [searchTerm]);
+  }, [searchTerm, pageNumber]);
 
   // Get Category------------------------------------------------------
   useEffect(() => {
@@ -210,6 +218,7 @@ const ProductsTable = () => {
                   ) : (
                     product.categoryName
                   )}
+                  
                 </td>
                 <td>
                   {editingProductId === product.productID ? (
@@ -255,6 +264,11 @@ const ProductsTable = () => {
             ))}
           </tbody>
         </table>
+        <PaginationControls
+          totalPages={totalPages}
+          pageNumber={pageNumber}
+          handlePageChange={handlePageChange}
+        />
       </div>
     </motion.div>
   );
