@@ -9,6 +9,7 @@ import OrdersPage from "./pages/Admin-page/Orders-page/OrdersPage";
 import SettingsPage from "./pages/Admin-page/Settings-page/SettingsPage";
 import BlogsPage from "./pages/Admin-page/Blogs-page/BlogsPage";
 import ProtectedRoute from "./utils/protectedRoute";
+import useAutoRefreshToken from "./utils/useAutoRefreshToken";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  useAutoRefreshToken(); 
   return <RouterProvider router={router} />;
 }
 

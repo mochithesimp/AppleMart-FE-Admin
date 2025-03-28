@@ -5,10 +5,11 @@ import "../Products/ProductTable.css";
 import { aProduct, bBlogs } from "../../interfaces";
 import {
   deleteBlogs,
-  getBlogs,
+
+  search,
   update,
 } from "../../apiServices/BlogServices/blogServices";
-import { getProduct } from "../../apiServices/ProductServices/productServices";
+import { getAllProduct } from "../../apiServices/ProductServices/productServices";
 import ImageBlogDropdownProps from "../Products/components/ImageBlogDropdownProps";
 import { ImageBlogUpload } from "../Firebase/ImageBlogUpload";
 import AddBlogForm from "../Products/components/AddBlogForm";
@@ -54,7 +55,14 @@ const BlogsTable = () => {
   });
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getBlogs();
+      const queryParams = new URLSearchParams();
+
+      if (searchTerm) {
+        queryParams.append("search", searchTerm);
+      }
+
+      const result = await search(queryParams);
+      
       if (result && result.$values) {
         setAllBlogs(result.$values);
       } else {
@@ -62,13 +70,13 @@ const BlogsTable = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [searchTerm]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getProduct();
-      if (result && result.items.$values) {
-        setProducts(result.items.$values);
+      const result = await getAllProduct();
+      if (result && result.$values) {
+        setProducts(result.$values);
       } else {
         console.error("Data not found or invalid response structure");
       }
@@ -253,7 +261,7 @@ const BlogsTable = () => {
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search blogs..."
+              placeholder="Search blogs by title..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
