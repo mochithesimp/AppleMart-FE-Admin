@@ -128,7 +128,7 @@ const ShipperListModal: React.FC<ShipperListModalProps> = ({
   // Setup event listeners for the radio buttons
   const setupRadioEventListeners = (
     modalElement: HTMLElement,
-    availableShippers: Shipper[],
+    _availableShippers: Shipper[],
     allShippers: Shipper[],
     onSelect: (shipperId: string) => void
   ) => {

@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as request from "../../utils/request";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const getBlogs = async () => {
   try {
-    const res = await request.get(`Blog`);
+    const res = await request.get(`/api/Blog`);
     //console.log("check data search: ", res);
     return res;
   } catch (error) {
@@ -14,7 +14,7 @@ export const getBlogs = async () => {
 export const deleteBlogs = async (blogId: number) => {
   try {
     const token = localStorage.getItem("token");
-    const res = await request.deleteData(`Blog/${blogId}`, {
+    const res = await request.deleteData(`/api/Blog/${blogId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -29,7 +29,7 @@ export const update = async (blogId: number, formData: unknown) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.put(
-      `https://localhost:7140/api/Blog/${blogId}`,
+      `${API_BASE_URL}/api/Blog/${blogId}`,
       formData,
       {
         headers: {
@@ -47,7 +47,7 @@ export const createBlogs = async (formData: unknown) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      `https://localhost:7140/api/Blog`,
+      `${API_BASE_URL}/api/Blog`,
       formData,
       {
         headers: {
@@ -64,7 +64,7 @@ export const createBlogs = async (formData: unknown) => {
 export const search = async (queryParams: URLSearchParams) => {
   try {
     const token = localStorage.getItem("token");
-    const res = await request.get("Blog", {
+    const res = await request.get("/api/Blog", {
       params: queryParams,
       headers: {
         Authorization: `Bearer ${token}`,

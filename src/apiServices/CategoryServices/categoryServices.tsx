@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as request from "../../utils/request";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const getCategory = async () => {
   try {
-    const res = await request.get("Category");
+    const res = await request.get("/api/Category");
     //console.log("check data add: ", res);
     return res;
   } catch (error) {
@@ -13,7 +13,7 @@ export const getCategory = async () => {
 
 export const getCategoryId = async (categoryId: number) => {
   try {
-    const res = await request.get(`Category/${categoryId}`);
+    const res = await request.get(`/api/Category/${categoryId}`);
     //console.log("check data search: ", res);
     return res;
   } catch (error) {
@@ -25,7 +25,7 @@ export const updateCategory = async (categoryId: number, formData: unknown) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.put(
-      `https://localhost:7140/api/Category/${categoryId}`,
+      `${API_BASE_URL}/api/Category/${categoryId}`,
       formData,
       {
         headers: {
@@ -42,7 +42,7 @@ export const deleteCategory = async (categoryId: number) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.delete(
-      `https://localhost:7140/api/Category/${categoryId}`,
+      `${API_BASE_URL}/api/Category/${categoryId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ export const createCategory = async (formData: unknown) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      `https://localhost:7140/api/Category`,
+      `${API_BASE_URL}/api/Category`,
       formData,
       {
         headers: {
@@ -75,7 +75,7 @@ export const createCategory = async (formData: unknown) => {
 
 export const search = async (queryParams: URLSearchParams) => {
   try {
-    const res = await request.get("Category", { params: queryParams });
+    const res = await request.get("/api/Category", { params: queryParams });
     // console.log("check data search: ", res);
     return res;
   } catch (error) {

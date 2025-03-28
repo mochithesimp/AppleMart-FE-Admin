@@ -2,10 +2,10 @@
 // import axios from "axios";
 import axios from "axios";
 import * as request from "../../utils/request";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const getProductId = async (productId: number) => {
   try {
-    const res = await request.get(`Product/${productId}`);
+    const res = await request.get(`/api/Product/${productId}`);
     //console.log("check data search: ", res);
     return res;
   } catch (error) {
@@ -15,7 +15,7 @@ export const getProductId = async (productId: number) => {
 
 export const getProduct = async () => {
   try {
-    const res = await request.get("Product");
+    const res = await request.get("/api/Product");
     return res;
   } catch (error) {
     console.log(error);
@@ -24,7 +24,7 @@ export const getProduct = async () => {
 
 export const getAllProduct = async () => {
   try {
-    const res = await request.get("Product/showall");
+    const res = await request.get("/api/Product/showall");
     return res;
   } catch (error) {
     console.log(error);
@@ -35,7 +35,7 @@ export const getTotalProduct = async () => {
   try {
     const token = localStorage.getItem("token");
     const res = await request.get(
-      "Admin/total-products",
+      "/api/Admin/total-products",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ export const createProduct = async (formData: unknown) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(
-      `https://localhost:7140/api/Product`,
+      `${API_BASE_URL}/api/Product`,
       formData,
       {
         headers: {
@@ -71,7 +71,7 @@ export const updateProduct = async (productId: number, formData: unknown) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.put(
-      `https://localhost:7140/api/Product/${productId}`,
+      `${API_BASE_URL}/api/Product/${productId}`,
       formData,
       {
         headers: {
@@ -89,7 +89,7 @@ export const deleteProducts = async (productId: number) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.delete(
-      `https://localhost:7140/api/Product/${productId}`,
+      `${API_BASE_URL}/api/Product/${productId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -105,7 +105,7 @@ export const deleteProducts = async (productId: number) => {
 
 export const search = async (queryParams: URLSearchParams) => {
   try {
-    const res = await request.get("Product", { params: queryParams });
+    const res = await request.get("/api/Product", { params: queryParams });
     // console.log("check data search: ", res);
     return res;
   } catch (error) {

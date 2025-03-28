@@ -3,7 +3,7 @@ import * as request from "../../utils/request";
 export const getStatCardUser = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await request.get("/Admin/get-total-user",
+    const res = await request.get("/api//Admin/get-total-user",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -18,7 +18,7 @@ export const getStatCardUser = async () => {
 
 export const getStatCardRevenue = async () => {
     try {
-      const res = await request.get("/Admin/get-total-revenue?");
+      const res = await request.get("/api/Admin/get-total-revenue?");
       //console.log("check data add: ", res);
       return res.totalRevenue;
     } catch (error) {
@@ -29,7 +29,7 @@ export const getStatCardRevenue = async () => {
 
   export const getStatTopProduct = async () => {
     try {
-      const res = await request.get("/Admin/total-products?${productId}");
+      const res = await request.get("/api/Admin/total-products?${productId}");
       //console.log("check data add: ", res);
       return res;
     } catch (error) {
@@ -39,7 +39,7 @@ export const getStatCardRevenue = async () => {
 
   export const getStatCardCustomers = async () => {
     try {
-      const res = await request.get("/Admin/get-top-costumers");
+      const res = await request.get("/api/Admin/get-top-costumers");
       //console.log("check data add: ", res);
       return res;
     } catch (error) {
