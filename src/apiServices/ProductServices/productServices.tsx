@@ -21,6 +21,24 @@ export const getProduct = async () => {
     console.log(error);
   }
 };
+export const getTotalProduct = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await request.get(
+      "Admin/total-products",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      //console.log("check data add: ", res);
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const createProduct = async (formData: unknown) => {
   try {
     const response = await axios.post(`https://localhost:7140/api/Product`,
