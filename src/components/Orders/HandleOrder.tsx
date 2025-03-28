@@ -155,9 +155,7 @@ const useHandleOrderConfirm = () => {
 };
 
 const useHandleOrderSend = () => {
-  const { sendDirectNotification } = useNotificationConnection();
-
-  const handleOrderSend = async (orderId: number) => {
+  const handleOrderSend = async (orderId: number, shipperId: string) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -167,40 +165,23 @@ const useHandleOrderSend = () => {
 
       swal({
         title: "This can not be undone!",
-        text: "You are about to Send order to Shipper!",
+        text: "You are about to send the order to the shipper!",
         icon: "info",
         buttons: ["Cancel", "Confirm"],
         dangerMode: true,
       }).then(async (confirm) => {
         if (confirm) {
           try {
-            const response = await orderSend(orderId);
+            console.log("Sending order with orderId:", orderId, "and shipperId:", shipperId);
+            const response = await orderSend(orderId, shipperId);
+            console.log("Response from orderSend:", response);
             if (response && response.status >= 200 && response.status < 300) {
-              if (response.data) {
-                const userId = response.data.userId;
-                const shipperName = response.data.shipperName || "our delivery team";
-                const shipperPhone = response.data.shipperPhone || "N/A";
-
-                const notificationSent = await sendDirectNotification(
-                  userId,
-                  "Order Shipped",
-                  `Dear customer, your Order (#${orderId}) has been assigned to shipper ${shipperName} (Phone: ${shipperPhone}). Your package is on its way to you!`
-                );
-
-                if (notificationSent) {
-                  console.log(`Real-time notification sent to user ${userId}`);
-                } else {
-                  console.warn(`Could not send real-time notification to user ${userId}`);
-                }
-
-                swal("Success!", `Order was sent to shipper ${shipperName}! User has been notified.`, "success").then(() => {
-                  window.location.reload();
-                });
-              } else {
-                swal("Success!", "Order was sent to shipper!", "success").then(() => {
-                  window.location.reload();
-                });
-              }
+              console.log("Order sent successfully!");
+              swal("Success!", "Order has been sent to the shipper!", "success").then(() => {
+                
+                window.location.reload();
+                console.log(`Order ${orderId} assigned to shipper ${shipperId}`);
+              });
             } else {
               throw new Error(response?.data?.message || "Failed to send order");
             }
@@ -218,6 +199,7 @@ const useHandleOrderSend = () => {
 
   return { handleOrderSend };
 };
+// export { useHandleOrderSend };
 
 interface PayPalTransaction {
   id: number;

@@ -100,7 +100,8 @@ export const orderSend = async (orderId: number, shipperId: string = "54448292-a
   try {
     const token = localStorage.getItem("token");
     const res = await axios.put(
-      `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
+      // `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
+        `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Shipped&ShipperId=${shipperId}`,
       {},
       {
         headers: {

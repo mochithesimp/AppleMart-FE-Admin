@@ -2,7 +2,13 @@ import * as request from "../../utils/request";
 
 export const getStatCardUser = async () => {
   try {
-    const res = await request.get("/Admin/get-total-user");
+    const token = localStorage.getItem("token");
+    const res = await request.get("/Admin/get-total-user",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
     //console.log("check data add: ", res);
     return res;
   } catch (error) {
