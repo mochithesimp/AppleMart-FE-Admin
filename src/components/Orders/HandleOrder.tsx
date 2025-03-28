@@ -23,7 +23,7 @@ const useNotificationConnection = () => {
   const setupNotificationConnection = async (token: string) => {
     try {
       const connection = new signalR.HubConnectionBuilder()
-        .withUrl(`${API_BASE_URL}/notificationHub`, {
+        .withUrl(`${API_BASE_URL}/api/notificationHub`, {
           accessTokenFactory: () => token,
           transport: signalR.HttpTransportType.WebSockets,
           skipNegotiation: true
@@ -463,4 +463,3 @@ const useHandleApproveRefund = () => {
 };
 
 export { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend, useHandleApproveRefund };
-
