@@ -89,3 +89,12 @@ export const search = async (queryParams: URLSearchParams) => {
     console.log(error);
   }
 };
+
+export const getProductItemId = async (productItemId: number) => {
+  try {
+    const res = await request.get(`ProductItem/${productItemId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
