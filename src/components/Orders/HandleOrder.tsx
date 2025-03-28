@@ -3,7 +3,7 @@ import { swal } from "../../import/import-another";
 import * as signalR from "@microsoft/signalr";
 import { useEffect, useRef } from "react";
 import axios from "axios";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const useNotificationConnection = () => {
   const notificationConnectionRef = useRef<signalR.HubConnection | null>(null);
 
@@ -23,7 +23,7 @@ const useNotificationConnection = () => {
   const setupNotificationConnection = async (token: string) => {
     try {
       const connection = new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:7140/notificationHub", {
+        .withUrl(`${API_BASE_URL}/notificationHub`, {
           accessTokenFactory: () => token,
           transport: signalR.HttpTransportType.WebSockets,
           skipNegotiation: true
@@ -263,7 +263,7 @@ const useHandleApproveRefund = () => {
       }
 
       const orderResponse = await axios.get(
-        `https://localhost:7140/api/Order/${orderId}`,
+        `${API_BASE_URL}/api/Order/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -293,7 +293,7 @@ const useHandleApproveRefund = () => {
 
         try {
           const response = await axios.put(
-            `https://localhost:7140/api/Order/${orderId}/status?NewStatus=Refunded`,
+            `${API_BASE_URL}/api/Order/${orderId}/status?NewStatus=Refunded`,
             {},
             {
               headers: {
@@ -339,7 +339,7 @@ const useHandleApproveRefund = () => {
         try {
           // Get transactions for this order
           const transactionResponse = await axios.get(
-            `https://localhost:7140/api/Paypal/order/${orderId}/transactions`,
+            `${API_BASE_URL}/api/Paypal/order/${orderId}/transactions`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -384,7 +384,7 @@ const useHandleApproveRefund = () => {
           console.log(`Processing refund for transaction ID: ${transactionId}`);
 
           const refundResponse = await axios.post(
-            `https://localhost:7140/api/Paypal/transaction/${transactionId}/refund`,
+            `${API_BASE_URL}/api/Paypal/transaction/${transactionId}/refund`,
             {},
             {
               headers: {
@@ -405,7 +405,7 @@ const useHandleApproveRefund = () => {
           // Update order status to Refunded
           const statusResponse = await axios({
             method: 'put',
-            url: `https://localhost:7140/api/Order/${orderId}/status`,
+            url: `${API_BASE_URL}/api/Order/${orderId}/status`,
             params: { NewStatus: "Refunded" },
             data: {},
             headers: {

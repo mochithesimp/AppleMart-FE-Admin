@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, BarChart2, Settings, ShoppingBag, DollarSign, ShoppingCart, Menu, FileText, LucideProps } from "lucide-react";
+import { Users, BarChart2, Settings, ShoppingBag, ShoppingCart, Menu, FileText, LucideProps } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
@@ -16,7 +16,7 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
     { name: "Products", icon: ShoppingBag, color: "#8B5CF6", path: "/admin/products" },
     { name: "Blogs", icon: FileText, color: "#F43F5E", path: "/admin/blogs" }, // Sửa lỗi thiếu icon và màu
     { name: "Users", icon: Users, color: "#EC4899", path: "/admin/users" },
-    { name: "Sales", icon: DollarSign, color: "#10B981", path: "/admin/sales" },
+    // { name: "Sales", icon: DollarSign, color: "#10B981", path: "/admin/sales" },
     { name: "Orders", icon: ShoppingCart, color: "#F59E0B", path: "/admin/orders" },
     { name: "Settings", icon: Settings, color: "#6EE7B7", path: "/admin/settings" },
 ];

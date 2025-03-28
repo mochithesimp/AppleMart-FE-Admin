@@ -92,7 +92,7 @@ export const search = async (queryParams: URLSearchParams) => {
 
 export const getProductItemId = async (productItemId: number) => {
   try {
-    const res = await request.get(`ProductItem/${productItemId}`);
+    const res = await request.get(`/api/ProductItem/${productItemId}`);
     return res.data;
   } catch (error) {
     console.log(error);

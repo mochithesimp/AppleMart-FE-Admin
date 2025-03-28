@@ -2,9 +2,9 @@
 import { motion } from "framer-motion";
 import Header from "../../../components/Header/Header";
 import UsersTable from "../../../components/Users/UsersTable";
-import UserGrowthChart from "../../../components/Users/UserGrowthChart";
-import UserActivityHeatmap from "../../../components/Users/UserActivityHeatmap";
-import UserDemographicsChart from "../../../components/Users/UserDemographicsChart";
+// import UserGrowthChart from "../../../components/Users/UserGrowthChart";
+// import UserActivityHeatmap from "../../../components/Users/UserActivityHeatmap";
+// import UserDemographicsChart from "../../../components/Users/UserDemographicsChart";
 import "./UsersPage.css";
 
  const UsersPage: React.FC = () => {
@@ -25,13 +25,13 @@ import "./UsersPage.css";
                 <UsersTable />
 
                 {/* USER CHARTS */}
-                <div className="charts-grid">
+                {/* <div className="charts-grid">
                     <UserGrowthChart />
                     <UserActivityHeatmap />
                     <div className="lg:col-span-2">
                         <UserDemographicsChart />
                     </div>
-                </div>
+                </div> */}
             </main>
         </div>
 

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:7140/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:7140";
 if (!API_BASE_URL) {
   throw new Error("API_BASE_URL is not defined. Check your environment variables.");
 }
