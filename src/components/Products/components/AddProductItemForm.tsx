@@ -5,7 +5,6 @@ import { ImageUpload } from "../../Firebase/ImageUpload";
 import "../ProductTable.css";
 import { createProductItem } from "../../../apiServices/ProductServices/productItemServices";
 import { aProduct } from "../../../interfaces";
-import { getProduct } from "../../../apiServices/ProductServices/productServices";
 import { addProductImgs } from "../../../apiServices/ProductServices/productImgSevices";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";

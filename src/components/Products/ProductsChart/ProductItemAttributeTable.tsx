@@ -15,14 +15,17 @@ import {
   ProductItemAttribute,
 } from "../../../interfaces";
 import { getAttribute } from "../../../apiServices/AttributeServices/AttributeServices";
-import { getProductItems } from "../../../apiServices/ProductServices/productItemServices";
+import { getAllProductItem } from "../../../apiServices/ProductServices/productItemServices";
 import AddProductItemAttribute from "../components/AddProductItemAttribute";
+import PaginationControls from "../components/PaginationControls";
 
 const ProductItemAttributeTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [allProductIA, setAllProductIA] = useState<ProductItemAttribute[]>([]);
   const [productItems, setProductItems] = useState<ProductItem[]>([]);
   const [Attributies, setAttributies] = useState<Attribute[]>([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [editingProductIAId, setEditingProductIAId] = useState<number | null>(
     null
   );
@@ -30,6 +33,10 @@ const ProductItemAttributeTable = () => {
     {}
   );
   const [showAddForm, setShowAddForm] = useState(false);
+
+  const handlePageChange = (newPage: number) => {
+    setPageNumber(newPage);
+  };
 
   // Get all product-------------------------------------------------
   useEffect(() => {
@@ -40,7 +47,10 @@ const ProductItemAttributeTable = () => {
         queryParams.append("SearchAttributeName", searchTerm);
       }
 
+      queryParams.append("PageNumber", pageNumber.toString());
+
       const result = await search(queryParams);
+      setTotalPages(result.totalPages);
 
       if (result && result.items.$values) {
         setAllProductIA(result.items.$values);
@@ -49,7 +59,7 @@ const ProductItemAttributeTable = () => {
       }
     };
     fetchData();
-  }, [searchTerm]);
+  }, [pageNumber, searchTerm]);
 
   // Get Attribute------------------------------------------------------
   useEffect(() => {
@@ -67,9 +77,9 @@ const ProductItemAttributeTable = () => {
   // Get ProductItem------------------------------------------------------
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getProductItems();
-      if (result && result.items.$values) {
-        setProductItems(result.items.$values);
+      const result = await getAllProductItem();
+      if (result && result.$values) {
+        setProductItems(result.$values);
       } else {
         console.error("Data not found or invalid response structure");
       }
@@ -176,7 +186,7 @@ const ProductItemAttributeTable = () => {
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Search by attribute name..."
               onChange={handleSearch}
               value={searchTerm}
             />
@@ -290,6 +300,11 @@ const ProductItemAttributeTable = () => {
             ))}
           </tbody>
         </table>
+        <PaginationControls
+          totalPages={totalPages}
+          pageNumber={pageNumber}
+          handlePageChange={handlePageChange}
+        />
       </div>
     </motion.div>
   );

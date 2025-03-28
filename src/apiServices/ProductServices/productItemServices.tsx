@@ -12,6 +12,17 @@ export const getProductItems = async () => {
   }
 };
 
+export const getAllProductItem = async () => {
+  try {
+    const res = await request.get(`ProductItem/showall`);
+    console.log("check data search: ", res);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching product items:", error);
+    return []; 
+  }
+};
+
 export const createProductItem = async (formData: unknown) => {
   try {
     const token = localStorage.getItem("token");
@@ -53,8 +64,14 @@ export const updateProductItem = async (
 
 export const deleteProductItems = async (productItemId: number) => {
   try {
+    const token = localStorage.getItem("token");
     const res = await axios.delete(
-      `https://localhost:7140/api/ProductItem/${productItemId}`
+      `https://localhost:7140/api/ProductItem/${productItemId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     // console.log("check data search: ", res);
     return res;

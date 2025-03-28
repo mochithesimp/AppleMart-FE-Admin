@@ -23,8 +23,15 @@ export const getCategoryId = async (categoryId: number) => {
 
 export const updateCategory = async (categoryId: number, formData: unknown) => {
   try {
-    const response = await axios.put(`https://localhost:7140/api/Category/${categoryId}`,
-      formData
+    const token = localStorage.getItem("token");
+    const response = await axios.put(
+      `https://localhost:7140/api/Category/${categoryId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response;
   } catch (error) {
@@ -33,7 +40,15 @@ export const updateCategory = async (categoryId: number, formData: unknown) => {
 };
 export const deleteCategory = async (categoryId: number) => {
   try {
-    const res = await axios.delete(`https://localhost:7140/api/Category/${categoryId}`);
+    const token = localStorage.getItem("token");
+    const res = await axios.delete(
+      `https://localhost:7140/api/Category/${categoryId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     // console.log("check data search: ", res);
     return res;
   } catch (error) {
@@ -42,7 +57,16 @@ export const deleteCategory = async (categoryId: number) => {
 };
 export const createCategory = async (formData: unknown) => {
   try {
-    const response = await axios.post(`https://localhost:7140/api/Category`, formData);
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `https://localhost:7140/api/Category`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     console.log(error);

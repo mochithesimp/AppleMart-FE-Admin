@@ -21,6 +21,16 @@ export const getProduct = async () => {
     console.log(error);
   }
 };
+
+export const getAllProduct = async () => {
+  try {
+    const res = await request.get("Product/showall");
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getTotalProduct = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -41,8 +51,15 @@ export const getTotalProduct = async () => {
 
 export const createProduct = async (formData: unknown) => {
   try {
-    const response = await axios.post(`https://localhost:7140/api/Product`,
-      formData
+    const token = localStorage.getItem("token");
+    const response = await axios.post(
+      `https://localhost:7140/api/Product`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response;
   } catch (error) {
@@ -52,8 +69,15 @@ export const createProduct = async (formData: unknown) => {
 
 export const updateProduct = async (productId: number, formData: unknown) => {
   try {
-    const response = await axios.put(`https://localhost:7140/api/Product/${productId}`,
-      formData
+    const token = localStorage.getItem("token");
+    const response = await axios.put(
+      `https://localhost:7140/api/Product/${productId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response;
   } catch (error) {
@@ -63,7 +87,15 @@ export const updateProduct = async (productId: number, formData: unknown) => {
 
 export const deleteProducts = async (productId: number) => {
   try {
-    const res = await axios.delete(`https://localhost:7140/api/Product/${productId}`);
+    const token = localStorage.getItem("token");
+    const res = await axios.delete(
+      `https://localhost:7140/api/Product/${productId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     // console.log("check data search: ", res);
     return res;
   } catch (error) {
