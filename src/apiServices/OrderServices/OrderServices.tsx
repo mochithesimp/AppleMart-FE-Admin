@@ -31,6 +31,7 @@ export const getOrder = async (orderId: any) => {
     return res;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
