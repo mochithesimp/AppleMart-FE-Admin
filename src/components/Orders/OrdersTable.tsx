@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
-import { Search, Eye } from "lucide-react";
+import { Search, Eye, Truck } from "lucide-react";
 import "./OrdersTable.css";
 import useOrderData from "./useOrderData";
 import { useHandleCancelOrder, useHandleOrderConfirm, useHandleOrderSend, useHandleApproveRefund } from "./HandleOrder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OrderDetailModal from "./components/OrderDetailModal";
+import ShipperListModal from "./components/ShipperListModal";
+import { getTotalShipper } from "../../apiServices/ShipperServices/shipperServices";
 
 const OrdersTable: React.FC = () => {
   const { orderData, searchTerm, setSearchTerm } = useOrderData();
@@ -14,6 +16,41 @@ const OrdersTable: React.FC = () => {
   const { handleOrderSend } = useHandleOrderSend();
   const { handleApproveRefund } = useHandleApproveRefund();
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [showShipperModal, setShowShipperModal] = useState(false);
+  const [shippers, setShippers] = useState<any[]>([]);
+  const [orderToAssign, setOrderToAssign] = useState<any>(null);
+
+  useEffect(() => {
+    const loadShippers = async () => {
+      try {
+        const data = await getTotalShipper();
+        console.log("data",data );
+        
+        setShippers(data);
+      } catch (error) {
+        console.error("Error fetching shippers:", error);
+      }
+    };
+    loadShippers();
+  }, []);
+
+  const handleSelectShipper = async (shipperId: string) => {
+    console.log("Selected Shipper ID:", shipperId);
+    if (orderToAssign) {
+      try {
+        await handleOrderSend(orderToAssign.orderID, shipperId);
+        // orderToAssign.orderStatus = "Shipped";
+        
+        setOrderToAssign(null);
+        setShowShipperModal(false);
+        alert(`Shipper selected! ${shipperId}`);
+        
+      } catch (error) {
+        console.error("Error assigning shipper:", error);
+      }
+    }
+  };
+
   return (
     <motion.div
       className="orders-container"
@@ -92,7 +129,10 @@ const OrdersTable: React.FC = () => {
                     {order.orderStatus === "Processing" && (
                       <button
                         className="send-button cursor-pointer"
-                        onClick={() => handleOrderSend(order.orderID)}
+                        onClick={() => {
+                          setOrderToAssign(order);
+                          setShowShipperModal(true);
+                        }}
                       >
                         Send
                       </button>
@@ -114,6 +154,13 @@ const OrdersTable: React.FC = () => {
       </div>
       {selectedOrder && (
         <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrder(null)} />
+      )}
+      {showShipperModal && (
+        <ShipperListModal
+          shippers={shippers.filter(shipper => shipper.pendingOrdersCount < 3)}
+          onSelectShipper={handleSelectShipper}
+          onClose={() => setShowShipperModal(false)}
+        />
       )}
     </motion.div>
   );
