@@ -7,7 +7,7 @@ import StatCard from "../../../components/StatCard/StatCard";
 import "./DashboardPage.css";
 import SalesOverviewChart from "../../../components/Charts/SalesOverviewChart/SalesOverviewChart";
 import CategoryDistributionChart from "../../../components/Charts/CategoryDistributionChart/CategoryDistributionChart";
-import SalesChannelChart from "../../../components/Charts/SalesChannelChart/SalesChannelChart";
+// import SalesChannelChart from "../../../components/Charts/SalesChannelChart/SalesChannelChart";
 
 
 import { useEffect, useState } from "react";
@@ -56,17 +56,6 @@ const DashboardPage: React.FC = () => {
           fetchData();
         }, []);
       
-        // useEffect(() => {
-        //     const fetchData = async () => {
-        //       const result = await getStatCardCustomers();
-        //       if (result && result.$values) {
-        //         setTotalCustomer(result.$values);
-        //       } else {
-        //         console.error("Data not found or invalid response structure");
-        //       }
-        //     };
-        //     fetchData();
-        //   }, []);
   return (
     
     <div className="dashboard-container">
@@ -85,11 +74,14 @@ const DashboardPage: React.FC = () => {
         </motion.div>
         {/* Charts */}
         <div className="grid">
-          <SalesOverviewChart />topSelling
+          <div className="flex">
+          <SalesOverviewChart />
           <CategoryDistributionChart />
-          <div className="lg:col-span-2">
-            <SalesChannelChart />
           </div>
+          
+          {/* <div className="lg:col-span-2">
+            <SalesChannelChart />
+          </div> */}
         </div>
       </main>
     </div>
