@@ -35,7 +35,7 @@ export const getStatTopProduct = async () => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await request.get("/api/Admin/total-products?${productId}", {
+    const res = await request.get("/api/Admin/total-products", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

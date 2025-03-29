@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../../components/Header/Header";
-import { UserCheck, UserPlus, UsersIcon, UserX } from "lucide-react";
+import { UserCheck, UserPlus, UsersIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import StatCard from "../../../components/StatCard/StatCard";
 
@@ -11,14 +11,14 @@ import SalesChannelChart from "../../../components/Charts/SalesChannelChart/Sale
 
 
 import { useEffect, useState } from "react";
-import { getStatCardCustomers, getStatCardRevenue, getStatTopProduct, getStatCardUser } from "../../../apiServices/StatCardServices/statCardServices";
+import { getStatCardRevenue, getStatTopProduct, getStatCardUser } from "../../../apiServices/StatCardServices/statCardServices";
 
 const DashboardPage: React.FC = () => {
 
   const[totalUser, setTotalUser] = useState(Number);
   const[totalRevenue, setTotalRevenue] = useState(Number);
   const[topSelling, setTopSelling] = useState(Number);
-  const[totalCustomer, setTotalCustomer] = useState(Number);
+  // const[totalCustomer, setTotalCustomer] = useState(Number);
 
   useEffect(() => {
       const fetchData = async () => {
@@ -47,8 +47,8 @@ const DashboardPage: React.FC = () => {
       useEffect(() => {
           const fetchData = async () => {
             const result = await getStatTopProduct();
-            if (result && result.$values) {
-              setTopSelling(result.$values);
+            if (result && result.totalCount) {
+              setTopSelling(result.totalCount);
             } else {
               console.error("Data not found or invalid response structure");
             }
@@ -56,17 +56,17 @@ const DashboardPage: React.FC = () => {
           fetchData();
         }, []);
       
-        useEffect(() => {
-            const fetchData = async () => {
-              const result = await getStatCardCustomers();
-              if (result && result.$values) {
-                setTotalCustomer(result.$values);
-              } else {
-                console.error("Data not found or invalid response structure");
-              }
-            };
-            fetchData();
-          }, []);
+        // useEffect(() => {
+        //     const fetchData = async () => {
+        //       const result = await getStatCardCustomers();
+        //       if (result && result.$values) {
+        //         setTotalCustomer(result.$values);
+        //       } else {
+        //         console.error("Data not found or invalid response structure");
+        //       }
+        //     };
+        //     fetchData();
+        //   }, []);
   return (
     
     <div className="dashboard-container">
@@ -81,11 +81,11 @@ const DashboardPage: React.FC = () => {
              <StatCard name="Total Users" icon={UsersIcon} value={totalUser.toLocaleString()} color="#6366F1" />
                     <StatCard name="Total Sale" icon={UserPlus} value={totalRevenue.toLocaleString()} color="#10B981" />
                     <StatCard name="Total Product" icon={UserCheck} value={topSelling.toLocaleString()} color="#F59E0B" />
-                    <StatCard name="Top Customer" icon={UserX} value={totalCustomer.toLocaleString()} color="#EF4444" />
+                    {/* <StatCard name="Top Customer" icon={UserX} value={totalCustomer.toLocaleString()} color="#EF4444" /> */}
         </motion.div>
         {/* Charts */}
         <div className="grid">
-          <SalesOverviewChart />
+          <SalesOverviewChart />topSelling
           <CategoryDistributionChart />
           <div className="lg:col-span-2">
             <SalesChannelChart />
