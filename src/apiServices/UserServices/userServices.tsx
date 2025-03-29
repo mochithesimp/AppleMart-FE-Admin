@@ -17,8 +17,12 @@ export const getUser = async () => {
 
 export const getUserId = async (userId: string) => {
   try {
-    const res = await request.get(`/api/User/${userId}`);
-    //console.log("check data search: ", res);
+    const token = localStorage.getItem("token");
+    const res = await request.get(`/api/User/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res;
   } catch (error) {
     console.log(error);
