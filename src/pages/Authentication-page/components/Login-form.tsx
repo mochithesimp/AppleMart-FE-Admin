@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
-import GoogleLogin from "../GoogleLogin";
+// import GoogleLogin from "../GoogleLogin";
 import "../Style.css";
 import { login } from "../../../apiServices/AccountServices/loginServices";
 import { AxiosError } from "axios";
@@ -160,7 +160,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ activeForm }) => {
             </div>
           </div>
           <div className="social-login">
-            <GoogleLogin />
+            {/* <GoogleLogin /> */}
             {/* <i className="bx bxl-facebook"></i>
             <i className="bx bxl-github"></i> */}
           </div>
