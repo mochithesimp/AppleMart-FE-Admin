@@ -74,11 +74,8 @@ const DashboardPage: React.FC = () => {
         </motion.div>
         {/* Charts */}
         <div className="grid">
-          <div className="flex">
           <SalesOverviewChart />
           <CategoryDistributionChart />
-          </div>
-          
           {/* <div className="lg:col-span-2">
             <SalesChannelChart />
           </div> */}
